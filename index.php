@@ -26,7 +26,7 @@
 
     <div class="cover">
         <div class="title">
-            <h1>Welcome to the Online Service of BAUST</h1>
+            <h1>Welcome tod the Online Service of BAUST</h1>
         </div>
     </div>
 
