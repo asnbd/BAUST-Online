@@ -20,4 +20,3 @@ require_once "includes/config.php";
 <p>Oops! the page doesn't exist.</p>
 <a href="<?php echo $home_dir; ?>">Homepage</a>
 </html>
-s
