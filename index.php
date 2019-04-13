@@ -3,30 +3,16 @@
 <head>
     <title>BAUST Online</title>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:300">
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
 </head>
 
 <body>
 
-    <div class="header">
-        <div class="header-container">
-            <a href="index.html"><img src="img/BAUST-Logo.png" height="55px" alt="BAUST Online" class="logo"></a>
-            <nav>
-                <ul>
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="signup.html">Signup</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-
+    <?php $active_page = 'home'; include('includes/header.php'); ?>
 
     <div class="cover">
         <div class="title">
-            <h1>Welcome tod the Online Service of BAUST</h1>
+            <h1>Welcome to the Online Service of BAUST</h1>
         </div>
     </div>
 
@@ -53,12 +39,7 @@
         </center>
     </div>
 
-    <div class="footer">
-        <div class="header-container">
-            <p style="float: left;">Copyright &copy; 2019<br /><br />Visit <a target="_blank" href="http://baust.edu.bd">BAUST Official Website</a></p>
-            <p style="float: right;">Developed by Nomaan, Meghla, Siam & Warka</p>
-        </div>
-    </div>
+    <?php include('includes/footer.php'); ?>
 
 </body>
 

@@ -1,0 +1,330 @@
+/*
+    Course: Web Engineering Project
+    Project: BAUST Online
+    Date Created: 18-02-2019
+    Team:
+     - Abdullah Al Baki (160101004)
+     - Asswad Sarker Nomaan (160101006)
+     - Wajiha Ahmed Warka (160101015)
+     - Mst. Monakkara Begum (160101026)
+*/
+
+
+/* Navigation Bar Design*/
+body {
+    margin: 0;
+    background: #222;
+    font-family: sans-serif;
+    height: 100%;
+    padding: 0;
+}
+
+a {
+    color: #4cc104;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.header-container {
+	width:	80%;
+	margin: 0 auto;
+}
+
+.header{
+    background: #333;
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
+    top: 0;
+    z-index: 1;
+}
+
+.logo {
+    float: left;
+}
+
+nav {
+	float: right;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    overflow: hidden;
+}
+
+nav li {
+    float: left;
+    padding-top: 5px;
+    margin-right: 2px;
+}
+
+nav li.active {
+    background-color: #111;
+}
+
+nav li.active::after {
+    content: ' ';
+    display: block;
+    width: 100%;
+    height: 5px;
+    background-color: #4CAF50;
+}
+
+nav li:hover{
+    background-color: #111;
+}
+
+nav li:hover::after {
+    content: ' ';
+    display: block;
+    width: 100%;
+    height: 5px;
+    background-color: #4CAF50;
+}
+
+nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+	text-decoration: none;
+	text-transform: uppercase;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+@media screen and (max-width:600px){
+    .logo, nav, nav li{
+        float: none;
+    }
+}
+
+
+
+/* Main Page */
+
+.container{
+    margin-top: 120px;
+}
+
+.content{
+    font-size: 25px;
+    color: white;
+    width: 80%;
+    margin: 0px auto;
+}
+
+.footer{
+    background: #333;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 50px;
+    color: grey;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    height: 100%;
+}
+
+
+
+/* Buttons */
+a.button1{
+    display:inline-block;
+    padding:0.35em 1.2em;
+    border:0.1em solid #FFFFFF;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#FFFFFF;
+    text-align:center;
+    transition: all 0.2s;
+}
+
+a.button1:hover{
+    border: 0.1em solid #4cc104;
+    background-color:#4cc104;
+}
+
+a.button2{
+    display:inline-block;
+    padding:0.35em 1.2em;
+    border: 0.1em solid #FFFFFF;
+    background-color:#f4511e;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#FFFFFF;
+    text-align:center;
+    transition: all 0.2s;
+}
+
+a.button2:hover{
+    border: 0.1em solid #4cc104;
+    background-color:#4cc104;
+}
+
+@media all and (max-width:30em){
+    a.button1{
+        display:block;
+        margin:0.4em auto;
+    }
+}
+
+
+
+/* Login Page Design */
+.login-box{
+	width:320px;
+	background: rgba(0, 0, 0, 0.5);
+	color:#fff;
+	margin: auto;
+	box-sizing:border-box;
+	padding:70px 30px;
+}
+
+.reg_message{
+    width:320px;
+    background: rgba(0, 255, 0, 0.5);
+    color:#fff;
+    margin: auto;
+    box-sizing:border-box;
+    padding:4px 30px;
+}
+
+.error{
+    background: rgba(255, 0, 0, 0.5);
+}
+
+.avatar{
+	width:100px;
+	height:100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.login-box h1{
+	margin:0;
+	padding:0 0 20px;
+	text-align:center;
+	font-size: 22px;
+}
+
+.login-box p{
+	margin:0;
+	padding:0;
+	font-weight:bold;
+}
+
+.login-box input{
+	width: 100%;
+	margin-bottom:20px;
+}
+
+.login-box input[type="text"], input[type="email"], input[type="password"]{
+	border: none;
+	border-bottom:1px solid #fff;
+	background: transparent;
+	outline: none;
+	height: 40px;
+	color: #fff;
+	font-size: 16px;
+}
+
+.login-box textarea{
+	width: 100%;
+	margin-bottom:20px;
+}
+
+.login-box textarea{
+	border: none;
+	border-bottom:1px solid #fff;
+	background: transparent;
+	outline: none;
+	height: 40px;
+	color: #fff;
+	font-size: 16px;
+}
+
+.login-box input[type="submit"]{
+	border:none;
+	outline:none;
+	height: 40px;
+	background: #1c8adb;
+	color:#fff;
+	font-size: 18px;
+	border-radius:20px;
+}
+
+.login-box input[type="submit"]:hover{
+	cursor:pointer;
+	background:#39dc79;
+	color:#000;
+}
+
+.login-box a{
+	text-decoration:none;
+	font-size:14px;
+	color:#fff;
+}
+
+.login-box a:hover{
+	color:#39dc79;
+}
+
+.validate_text{
+    /*visibility: hidden;*/
+    display: none;
+    color: red;
+    font-size: 13px;
+}
+
+
+/* Homepage Cover Image */
+
+.cover {
+    background:
+      linear-gradient(
+        rgba(0, 0, 0, 0.6),
+        rgba(0, 0, 0, 0.5)
+      ),
+      url(../img/cover.jpg);
+    background-size: cover;
+    -webkit-background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 600px;
+}
+
+.title {
+    position: relative;
+    top: 50%;
+    left: 10%;
+
+    color: white;
+    text-align: left;
+    display: inline;
+}
+
+.title h1 {
+    text-transform: uppercase;
+    margin: 40px;
+    font-size: 4rem;
+    width: 60%;
+}
