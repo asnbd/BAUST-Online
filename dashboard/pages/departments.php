@@ -22,21 +22,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     }
 
     mysqli_free_result($result);
-
-    if(isset($_POST['departmentName'])){
-
-        $dept_name = $_POST['departmentName'];
-        $dept_desc = $_POST['departmentDesc'];
-        $dept_head = $_POST['departmentHead'];
-
-        $sql = "INSERT INTO department (name, description, head) VALUES('$dept_name', '$dept_desc', '$dept_head')";
-
-        if($result = mysqli_query($db_conn, $sql)){
-            echo "Successful";
-        } else {
-            echo "Error";
-        }
-    }
 } else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
@@ -167,7 +152,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 </button>
             </div>
             <div class="modal-body">
-                <form action="index.php?p=departments" method="post">
+                <form action="pages/add_dept_action.php" method="post">
                     <div class="form-group">
                         <label for="departmentName">Department Name</label>
                         <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name">
@@ -197,7 +182,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             ?>
                         </select>
                     </div>
-                    <button type="submit" id="add_dept" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
             <div class="modal-footer">
