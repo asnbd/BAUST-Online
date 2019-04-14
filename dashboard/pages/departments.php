@@ -22,6 +22,20 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     }
 
     mysqli_free_result($result);
+
+    if(isset($_POST['deptName'])){
+        $dept_name = $_POST['deptName'];
+        $dept_desc = $_POST['deptDesc'];
+        $dept_head = $_POST['deptHead'];
+
+        $sql = "INSERT INTO department (name, description, head) VALUES('$dept_name', '$dept_desc', '$dept_head')";
+
+        if($result = mysqli_query($db_conn, $sql)){
+            echo "Successful";
+        } else {
+            echo "Error";
+        }
+    }
 } else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
@@ -152,18 +166,18 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 </button>
             </div>
             <div class="modal-body">
-                <form action="pages/add_dept_action.php" method="post">
+                <form action="?p=departments" method="post">
                     <div class="form-group">
                         <label for="departmentName">Department Name</label>
-                        <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name">
+                        <input type="text" class="form-control" name="deptName" id="departmentName" placeholder="Enter Department Name">
                     </div>
                     <div class="form-group">
                         <label for="departmentDesc">Description</label>
-                        <textarea class="form-control" id="departmentDesc" placeholder="Enter Department Description" rows="3"></textarea>
+                        <textarea class="form-control" name="deptDesc" id="departmentDesc" placeholder="Enter Department Description" rows="3"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="departmentHead">Department Head</label>
-                        <select class="form-control" id="departmentHead">
+                        <select class="form-control" name="deptHead" id="departmentHead">
                             <option selected>Choose...</option>
                             <?php
                                 $sql = "SELECT username, name FROM teacher";
@@ -183,6 +197,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
+                    <input type="submit" value="Add">
                 </form>
             </div>
             <div class="modal-footer">
