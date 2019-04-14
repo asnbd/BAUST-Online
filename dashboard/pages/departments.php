@@ -20,15 +20,29 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     } else {
         echo mysqli_error($db_conn) . " SQL: " . $sql;
     }
-} else if ($login_role == 2){   //Teacher
 
-} else if ($login_role == 3){   // Student
+    mysqli_free_result($result);
 
-} else if($login_role == 10){   //Unauthorized
+    if(isset($_POST['departmentName'])){
+
+        $dept_name = $_POST['departmentName'];
+        $dept_desc = $_POST['departmentDesc'];
+        $dept_head = $_POST['departmentHead'];
+
+        $sql = "INSERT INTO department (name, description, head) VALUES('$dept_name', '$dept_desc', '$dept_head')";
+
+        if($result = mysqli_query($db_conn, $sql)){
+            echo "Successful";
+        } else {
+            echo "Error";
+        }
+    }
+} else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
         <h2>You don't have permission to view this page.</h2>");
 }
+
 
 
 ?>
@@ -68,15 +82,18 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <li class="breadcrumb-item">
                     <a href="#">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Tables</li>
+                <li class="breadcrumb-item active">Departments</li>
             </ol>
 
-            <!-- DataTables Example -->
+            <!-- Department Table -->
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
-                    Data Table Example</div>
+                    Departments</div>
                 <div class="card-body">
+
+                    <p><button type='button' class='btn btn-primary' data-toggle="modal" data-target="#addModal">Add</button></p>
+
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
@@ -115,12 +132,12 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </table>
                     </div>
                 </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+<!--                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
             </div>
 
-            <p class="small text-center text-muted my-5">
-                <em>More table examples coming soon...</em>
-            </p>
+<!--            <p class="small text-center text-muted my-5">-->
+<!--                <em>Departments</em>-->
+<!--            </p>-->
 
         </div>
         <!-- /.container-fluid -->
@@ -138,6 +155,57 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+
+<!-- Add Departmetn Modal-->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Department</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="index.php?p=departments" method="post">
+                    <div class="form-group">
+                        <label for="departmentName">Department Name</label>
+                        <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="departmentDesc">Description</label>
+                        <textarea class="form-control" id="departmentDesc" placeholder="Enter Department Description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="departmentHead">Department Head</label>
+                        <select class="form-control" id="departmentHead">
+                            <option selected>Choose...</option>
+                            <?php
+                                $sql = "SELECT username, name FROM teacher";
+
+                                if($result = mysqli_query($db_conn, $sql)){
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_assoc($result)){
+                                            echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
+                                        }
+                                    } else {
+
+                                    }
+                                } else {
+                                    die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <button type="submit" id="add_dept" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

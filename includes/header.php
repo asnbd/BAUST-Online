@@ -6,7 +6,7 @@
  * Time: 1:29 AM
  */
 
-require_once('session.php');
+//require_once('session.php');
 ?>
 
 <div class="header">
