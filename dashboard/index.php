@@ -23,8 +23,8 @@ switch ($page) {
         break;
 }
 
-if (file_exists('pages/' . $url)){
-    include 'pages/' . $url;
+if (file_exists($url)){
+    include $url;
 } else {
     include '../404.php';
 }

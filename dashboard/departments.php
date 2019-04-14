@@ -28,12 +28,16 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         $dept_desc = $_POST['deptDesc'];
         $dept_head = $_POST['deptHead'];
 
-        $sql = "INSERT INTO department (name, description, head) VALUES('$dept_name', '$dept_desc', '$dept_head')";
+        if(!empty($dept_name) && !empty($dept_head)){
+            $sql = "INSERT INTO department (name, description, head) VALUES('$dept_name', '$dept_desc', '$dept_head')";
 
-        if($result = mysqli_query($db_conn, $sql)){
-            echo "Successful";
+            if($result = mysqli_query($db_conn, $sql)){
+                $_SESSION['message'] = ["success", "Department Add Success!"];
+            } else {
+                $_SESSION['message'] = ["error", "Error Adding Department!"];
+            }
         } else {
-            echo "Error";
+            $_SESSION['message'] = ["error", "Error Adding Department! <strong>Department Name & Department Head</strong> can't be empty!"];
         }
     }
 } else {   //Unauthorized
@@ -41,9 +45,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         <h1>Unauthorized</h1><hr>
         <h2>You don't have permission to view this page.</h2>");
 }
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -84,6 +85,48 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <li class="breadcrumb-item active">Departments</li>
             </ol>
 
+            <?php
+                if(isset($_SESSION['message'])){
+                    if($_SESSION['message'][0] == 'success'){
+                        echo '<div class="alert alert-success alert-dismissible fade show">
+                            ' . $_SESSION['message'][1] . '
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>';
+                    }
+
+                    if($_SESSION['message'][0] == 'info'){
+                        echo '<div class="alert alert-info alert-dismissible fade show">
+                            ' . $_SESSION['message'][1] . '
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>';
+                    }
+
+                    if($_SESSION['message'][0] == 'warning'){
+                        echo '<div class="alert alert-warning alert-dismissible fade show">
+                            ' . $_SESSION['message'][1] . '
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>';
+                    }
+
+                    if($_SESSION['message'][0] == 'error'){
+                        echo '<div class="alert alert-danger alert-dismissible fade show">
+                            ' . $_SESSION['message'][1] . '
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>';
+                    }
+
+                    unset($_SESSION['message']);
+                }
+            ?>
+
             <!-- Department Table -->
             <div class="card mb-3">
                 <div class="card-header">
@@ -113,7 +156,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             </tfoot>
                             <tbody>
                             <?php
-                                $sql = "SELECT * FROM department";
+                                $sql = "SELECT department.name, department.description, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
                                 if($result = mysqli_query($db_conn, $sql)){
                                     while ($row = mysqli_fetch_assoc($result)){
                                         echo "<tr>
@@ -197,7 +240,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
-                    <input type="submit" value="Add">
                 </form>
             </div>
             <div class="modal-footer">
