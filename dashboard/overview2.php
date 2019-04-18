@@ -1,67 +1,88 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Nomaan
+ * Date: 13-Apr-19
+ * Time: 9:45 PM
+ */
+
+require_once "../includes/db.php";
+include "../includes/session.php";
+
+$teacher_count = NAN;
+$student_count = NAN;
+$dept_count = NAN;
+$course_count = NAN;
+$message_count = NAN;
+
+if ($login_role == 0 || $login_role == 1){  //Owner or Admin
+    $sql = "SELECT
+            (SELECT COUNT(*) FROM department) AS dept,
+            (SELECT COUNT(*) FROM course) AS course,
+            (SELECT COUNT(*) FROM student) AS student,
+            (SELECT COUNT(*) FROM teacher) AS teacher,
+            (SELECT COUNT(*) FROM message WHERE msg_to = '$login_user' AND unread = 1) AS message
+            FROM DUAL";
+
+    if($result = mysqli_query($db_conn, $sql)){
+        $row = mysqli_fetch_assoc($result);
+        $dept_count = $row['dept'];
+        $course_count = $row['course'];
+        $student_count = $row['student'];
+        $teacher_count = $row['teacher'];
+        $message_count = $row['message'];
+    } else {
+        echo mysqli_error($db_conn) . " SQL: " . $sql;
+    }
+} else if ($login_role == 2){   //Teacher
+
+} else if ($login_role == 3){   // Student
+
+} else if($login_role == 10){   //Unauthorized
+    die("<title>Unauthorized | BAUST Online</title>
+        <h1>Unauthorized</h1><hr>
+        <h2>You don't have permission to view this page.</h2>");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <title>BAUST Online - Dashboard</title>
-
-    <link href="css/bootstrap.css" rel="stylesheet">
-
-    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="css/test.css" rel="stylesheet">
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 </head>
 
-<body id="page-top">
+<body>
 
-<nav class="navbar navbar-expand navbar-dark bg-dark static-top navbar-fixed-top">
+<?php //include "includes/header.php" ?>
 
-    <a class="navbar-brand mr-1" href="index.html">BAUST Online</a>
+<nav class="navbar">
+
+    <a class="navbar-title" href="index.html">BAUST Online</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Navbar Search -->
-    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-    </form>
-
     <!-- Navbar -->
-    <ul class="navbar-nav ml-auto ml-md-0">
-        <li class="nav-item dropdown no-arrow mx-1">
+    <ul class="navbar-nav">
+        <li class="nav-item">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
                 <i class="fas fa-bell fa-fw"></i>
                 <span class="badge badge-danger">9+</span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
         </li>
+
         <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" data-toggle="dropdown">
                 <i class="fas fa-envelope fa-fw"></i>
-                <span class="badge badge-danger">7</span>
+                <span class="badge badge-danger"><?php echo $message_count > 9 ? "9+" : $message_count?></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+
         </li>
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -81,40 +102,23 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
+<!--    --><?php //$active_page = "dashboard"; include "includes/sidebar.php"; ?>
     <ul class="sidebar navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+        <li class="nav-item <?php if($active_page == 'dashboard') echo 'active'; ?>">
+            <a class="nav-link" href="index.php">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
         </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" data-toggle="dropdown">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Pages</span>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                <h6 class="dropdown-header">Login Screens:</h6>
-                <a class="dropdown-item" href="login.html">Login</a>
-                <a class="dropdown-item" href="register.html">Register</a>
-                <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
-                <div class="dropdown-divider"></div>
-                <h6 class="dropdown-header">Other Pages:</h6>
-                <a class="dropdown-item" href="404.html">404 Page</a>
-                <a class="dropdown-item" href="blank.html">Blank Page</a>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Charts</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="tables.html">
+
+        <li class="nav-item <?php if($active_page == 'departments') echo 'active'; ?>">
+            <a class="nav-link" href="?p=departments">
                 <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
+                <span>Departments</span></a>
         </li>
     </ul>
+
+<!--    End Of Sidebar-->
 
     <div id="content-wrapper">
 
@@ -130,31 +134,35 @@
 
             <!-- Icon Cards-->
             <div class="row">
+                <?php if($login_role <= 3){ ?>
                 <div class="col-xl-3 col-sm-6 mb-3">
                     <div class="card text-white bg-primary o-hidden h-100">
                         <div class="card-body">
                             <div class="card-body-icon">
                                 <i class="fas fa-fw fa-comments"></i>
                             </div>
-                            <div class="mr-5">26 New Messages!</div>
+                            <div class="mr-5"><?php echo $message_count == 0 ? "No ":$message_count; ?> New Message<?php if($message_count > 1) echo 's'?>!</div>
                         </div>
                         <a class="card-footer text-white clearfix small z-1" href="#">
                             <span class="float-left">View Details</span>
                             <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
+                                <i class="fas fa-angle-right"></i>
+                            </span>
                         </a>
                     </div>
                 </div>
+                <?php }?>
+
+                <?php if($login_role <= 3){ ?>
                 <div class="col-xl-3 col-sm-6 mb-3">
                     <div class="card text-white bg-warning o-hidden h-100">
                         <div class="card-body">
                             <div class="card-body-icon">
                                 <i class="fas fa-fw fa-list"></i>
                             </div>
-                            <div class="mr-5">11 New Tasks!</div>
+                            <div class="mr-5"><?php echo $dept_count ?> Department<?php if($dept_count > 1) echo 's'?></div>
                         </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
+                        <a class="card-footer text-white clearfix small z-1" href="?p=departments">
                             <span class="float-left">View Details</span>
                             <span class="float-right">
                   <i class="fas fa-angle-right"></i>
@@ -162,13 +170,15 @@
                         </a>
                     </div>
                 </div>
+                <?php }?>
+
                 <div class="col-xl-3 col-sm-6 mb-3">
                     <div class="card text-white bg-success o-hidden h-100">
                         <div class="card-body">
                             <div class="card-body-icon">
                                 <i class="fas fa-fw fa-user-tie"></i>
                             </div>
-                            <div class="mr-5">112 Teachers</div>
+                            <div class="mr-5"><?php echo $teacher_count ?> Teacher<?php if($teacher_count > 1) echo 's'?></div>
                         </div>
                         <a class="card-footer text-white clearfix small z-1" href="#">
                             <span class="float-left">View Details</span>
@@ -184,9 +194,9 @@
                             <div class="card-body-icon">
                                 <i class="fas fa-fw fa-users"></i>
                             </div>
-                            <div class="mr-5">500 Students</div>
+                            <div class="mr-5"><?php echo $student_count ?> Student<?php if($student_count > 1) echo 's'?></div>
                         </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
+                        <a class="card-footer text-white clearfix small z-1" href="?p=students">
                             <span class="float-left">View Details</span>
                             <span class="float-right">
                   <i class="fas fa-angle-right"></i>
@@ -200,6 +210,7 @@
         <!-- /.container-fluid -->
 
         <!-- Sticky Footer -->
+<!--        --><?php //include "includes/footer.php" ?>
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
@@ -232,7 +243,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="../logout.php">Logout</a>
             </div>
         </div>
     </div>

@@ -1,39 +1,57 @@
-(function($) {
-  "use strict";
+// (function($) {
+//   "use strict";
+//
+//   $("#sidebarToggle").on('click', function(e) {
+//     e.preventDefault();
+//     $("body").toggleClass("sidebar-toggled");
+//     $(".sidebar").toggleClass("toggled");
+//   });
+//
+//   // // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+//   // $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
+//   //   if ($(window).width() > 768) {
+//   //     var e0 = e.originalEvent,
+//   //       delta = e0.wheelDelta || -e0.detail;
+//   //     this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+//   //     e.preventDefault();
+//   //   }
+//   // });
+//
+// })(jQuery); // End of use strict
 
-  $("#sidebarToggle").on('click', function(e) {
-    e.preventDefault();
-    $("body").toggleClass("sidebar-toggled");
-    $(".sidebar").toggleClass("toggled");
-  });
+$sidebarToggle = document.getElementById("sidebarToggle");
 
-  // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-  $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
-    if ($(window).width() > 768) {
-      var e0 = e.originalEvent,
-        delta = e0.wheelDelta || -e0.detail;
-      this.scrollTop += (delta < 0 ? 1 : -1) * 30;
-      e.preventDefault();
-    }
-  });
+$sidebarToggle.onclick = function () {
+  document.body.classList.toggle("sidebar-toggled");
+  document.getElementsByClassName("sidebar")[0].classList.toggle("toggled");
+}
 
-  // Scroll to top button appear
-  $(document).on('scroll', function() {
-    var scrollDistance = $(this).scrollTop();
-    if (scrollDistance > 100) {
-      $('.scroll-to-top').fadeIn();
-    } else {
-      $('.scroll-to-top').fadeOut();
-    }
-  });
+// Validate Add Department Form in Departments Page
+function validateDeptForm() {
+  $dept_name = document.forms["AddDepartment"]["deptName"];
 
-  // Smooth scrolling using jQuery easing
-  $(document).on('click', 'a.scroll-to-top', function(event) {
-    var $anchor = $(this);
-    $('html, body').stop().animate({
-      scrollTop: ($($anchor.attr('href')).offset().top)
-    }, 1000, 'easeInOutExpo');
-    event.preventDefault();
-  });
+  $dept_name.classList.remove("is-invalid");
 
-})(jQuery); // End of use strict
+  if($dept_name.value == ""){
+    $dept_name.classList.add("is-invalid");
+    $dept_name.focus();
+    return false;
+  }
+
+  return true;
+}
+
+// Validate Assign Department Head Form in Departments Page
+function validateDeptHeadForm() {
+  $dept_head = document.forms["AssignDepartmentHead"]["departmentHead"];
+
+  $dept_head.classList.remove("is-invalid");
+
+  if($dept_head.value == ""){
+    $dept_head.classList.add("is-invalid");
+    $dept_head.focus();
+    return false;
+  }
+
+  return true;
+}

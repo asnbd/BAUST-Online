@@ -6,6 +6,9 @@
  * Time: 10:36 PM
  */
 
+$login_role = 10;
+$login_user = NAN;
+
 require_once "../includes/db.php";
 include "../includes/session.php";
 
@@ -26,10 +29,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     if(isset($_POST['deptName'])){
         $dept_name = $_POST['deptName'];
         $dept_desc = $_POST['deptDesc'];
-        $dept_head = $_POST['deptHead'];
 
-        if(!empty($dept_name) && !empty($dept_head)){
-            $sql = "INSERT INTO department (name, description, head) VALUES('$dept_name', '$dept_desc', '$dept_head')";
+        if(!empty($dept_name)){
+            $sql = "INSERT INTO department (name, description) VALUES('$dept_name', '$dept_desc')";
 
             if($result = mysqli_query($db_conn, $sql)){
                 $_SESSION['message'] = ["success", "Department Add Success!"];
@@ -37,7 +39,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 $_SESSION['message'] = ["error", "Error Adding Department!"];
             }
         } else {
-            $_SESSION['message'] = ["error", "Error Adding Department! <strong>Department Name & Department Head</strong> can't be empty!"];
+            $_SESSION['message'] = ["error", "Error Adding Department! <strong>Invalid Department Name!</strong>"];
         }
     }
 } else {   //Unauthorized
@@ -159,10 +161,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                 $sql = "SELECT department.name, department.description, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
                                 if($result = mysqli_query($db_conn, $sql)){
                                     while ($row = mysqli_fetch_assoc($result)){
+                                        $head = $row['head'] == ""?"<button type='button' class='btn btn-sm btn-info' data-toggle='modal' data-target='#assignDeptHeadModal'>Assign</button>":$row['head'];
                                         echo "<tr>
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['description'] . "</td>
-                                            <td>" . $row['head'] . "</td>
+                                            <td>" . $head . "</td>
                                             <td>" . "<button type='button' class='btn btn-success btn-sm'>Edit</button>
                                             <button type='button' class='btn btn-danger btn-sm'>Delete</button>" . "</td>
                                         </tr>";
@@ -198,46 +201,75 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Add Departmetn Modal-->
+<!-- Add Department Modal-->
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Department</h5>
+                <h5 class="modal-title" id="addModalLabel">Add Department</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="?p=departments" method="post">
+                <form name="AddDepartment" action="?p=departments" method="post" onsubmit="return validateDeptForm()">
                     <div class="form-group">
                         <label for="departmentName">Department Name</label>
                         <input type="text" class="form-control" name="deptName" id="departmentName" placeholder="Enter Department Name">
+                        <div class="invalid-feedback">
+                            Please enter department name.
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="departmentDesc">Description</label>
                         <textarea class="form-control" name="deptDesc" id="departmentDesc" placeholder="Enter Department Description" rows="3"></textarea>
                     </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Assign Department Head Modal-->
+<div class="modal fade" id="assignDeptHeadModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignDeptHeadModalLabel">Assign Department Head</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="AssignDepartmentHead" action="action/assign_dept_head.php" method="post" onsubmit="return validateDeptHeadForm()">
                     <div class="form-group">
                         <label for="departmentHead">Department Head</label>
                         <select class="form-control" name="deptHead" id="departmentHead">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <?php
-                                $sql = "SELECT username, name FROM teacher";
+                            // $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
+                            $sql = "SELECT username, name FROM teacher";
 
-                                if($result = mysqli_query($db_conn, $sql)){
-                                    if(mysqli_num_rows($result) > 0){
-                                        while($row = mysqli_fetch_assoc($result)){
-                                            echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
-                                        }
-                                    } else {
-
+                            if($result = mysqli_query($db_conn, $sql)){
+                                if(mysqli_num_rows($result) > 0){
+                                    while($row = mysqli_fetch_assoc($result)){
+                                        echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
                                     }
                                 } else {
-                                    die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+
                                 }
+                            } else {
+                                die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                            }
                             ?>
                         </select>
+                        <div class="invalid-feedback">
+                            Please select a department head.
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
@@ -280,7 +312,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="js/script.min.js"></script>
+<script src="js/script.js"></script>
 
 <!-- Demo scripts for this page-->
 <script src="js/demo/datatables-demo.js"></script>
