@@ -158,7 +158,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             </tfoot>
                             <tbody>
                             <?php
-                                $sql = "SELECT department.name, department.description, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
+                                $sql = "SELECT department.id, department.name, department.description, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
                                 if($result = mysqli_query($db_conn, $sql)){
                                     while ($row = mysqli_fetch_assoc($result)){
                                         $head = $row['head'] == ""?"<button type='button' class='btn btn-sm btn-info' data-toggle='modal' data-target='#assignDeptHeadModal'>Assign</button>":$row['head'];
@@ -166,8 +166,8 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['description'] . "</td>
                                             <td>" . $head . "</td>
-                                            <td>" . "<button type='button' class='btn btn-success btn-sm'>Edit</button>
-                                            <button type='button' class='btn btn-danger btn-sm'>Delete</button>" . "</td>
+                                            <td> <button type='button' class='btn btn-success btn-sm' data-toggle='modal' data-target='#editModal'>Edit</button>
+                                            <button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#deleteModal' onclick='deleteDept(" . $row['id'] . ", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                                     }
                                 }
@@ -281,8 +281,31 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     </div>
 </div>
 
+<!-- Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Delete" below if you want to delete <strong id="dept_name_text">the selected</strong> department.</div>
+            <div class="modal-footer">
+                <form name="DeleteDept" action="action/delete_dept.php" method="post">
+                    <input name="dept_id" type="hidden">
+                    <input name="dept_name" type="hidden">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -299,6 +322,8 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         </div>
     </div>
 </div>
+
+
 
 <!-- Bootstrap core JavaScript-->
 <script src="../vendor/jquery/jquery.min.js"></script>

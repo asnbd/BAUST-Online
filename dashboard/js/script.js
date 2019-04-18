@@ -55,3 +55,10 @@ function validateDeptHeadForm() {
 
   return true;
 }
+
+// Delete Department in Departments Page
+function deleteDept(id, name) {
+  document.forms["DeleteDept"]["dept_id"].value = id;
+  document.forms["DeleteDept"]["dept_name"].value = name;
+  document.getElementById("dept_name_text").innerHTML = name;
+}
