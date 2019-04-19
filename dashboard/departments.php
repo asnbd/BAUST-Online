@@ -138,10 +138,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                     <p><button type='button' class='btn btn-primary' data-toggle="modal" data-target="#addModal">Add</button></p>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive table-hover">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
+<!--                                <th width='15px'>#</th>-->
                                 <th>Dept. Name</th>
                                 <th>Description</th>
                                 <th>Head</th>
@@ -150,6 +151,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             </thead>
                             <tfoot>
                             <tr>
+<!--                                <th>#</th>-->
                                 <th>Dept. Name</th>
                                 <th>Description</th>
                                 <th>Head</th>
@@ -158,15 +160,16 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             </tfoot>
                             <tbody>
                             <?php
-                                $sql = "SELECT department.id, department.name, department.description, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
+                                $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
                                 if($result = mysqli_query($db_conn, $sql)){
                                     while ($row = mysqli_fetch_assoc($result)){
                                         $head = $row['head'] == ""?"<button type='button' class='btn btn-sm btn-info' data-toggle='modal' data-target='#assignDeptHeadModal'>Assign</button>":$row['head'];
+//                                        <td style='text-align: center; vertical-align: middle'><input onclick='toggleSelect(this)' type='checkbox'></td>
                                         echo "<tr>
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['description'] . "</td>
                                             <td>" . $head . "</td>
-                                            <td> <button type='button' class='btn btn-success btn-sm' data-toggle='modal' data-target='#editModal'>Edit</button>
+                                            <td> <button type='button' class='btn btn-success btn-sm' data-toggle='modal' data-target='#editModal' onclick='editDept(" . $row['id'] . ", \"" . $row['name'] . "\", \"" . $row['description'] . "\", \"" . $row['username'] . "\", \"" . $row['head'] . "\")'>Edit</button>
                                             <button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#deleteModal' onclick='deleteDept(" . $row['id'] . ", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                                     }
@@ -251,8 +254,8 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         <select class="form-control" name="deptHead" id="departmentHead">
                             <option value="" selected>Choose...</option>
                             <?php
-                            // $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
-                            $sql = "SELECT username, name FROM teacher";
+                            $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
+//                            $sql = "SELECT username, name FROM teacher";
 
                             if($result = mysqli_query($db_conn, $sql)){
                                 if(mysqli_num_rows($result) > 0){
@@ -272,6 +275,70 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Department Modal-->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Department</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="EditDepartment" action="action/update_dept.php" method="post" onsubmit="return validateEditDeptForm()">
+                    <div class="form-group">
+                        <label for="departmentName">Department Name</label>
+                        <input type="text" class="form-control" name="deptName" id="departmentName" placeholder="Enter Department Name">
+                        <div class="invalid-feedback">
+                            Please enter department name.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departmentDesc">Description</label>
+                        <textarea class="form-control" name="deptDesc" id="departmentDesc" placeholder="Enter Department Description" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departmentHead">Department Head</label>
+                        <select class="form-control" name="deptHead" id="departmentHead">
+                            <option value="" selected>Choose...</option>
+                            <option value="-1">Not Assigned</option>
+                            <?php
+                            $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
+//                            $sql = "SELECT username, name FROM teacher";
+
+                            if($result = mysqli_query($db_conn, $sql)){
+                                if(mysqli_num_rows($result) > 0){
+                                    while($row = mysqli_fetch_assoc($result)){
+                                        echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
+                                    }
+                                } else {
+
+                                }
+                            } else {
+                                die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                            }
+                            ?>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a department head.
+                        </div>
+                    </div>
+
+                    <input name="deptID" type="hidden">
+
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
             <div class="modal-footer">
