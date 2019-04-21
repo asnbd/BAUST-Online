@@ -79,21 +79,16 @@ function validateEditDeptForm() {
   return true;
 }
 
+// Assign Department Head in Departments Page
+function assignDept(id) {
+  document.forms["AssignDepartmentHead"]["deptID"].value = id;
+}
+
 // Edit Department in Departments Page
 function editDept(id, name, desc, head, head_name) {
   document.forms["EditDepartment"]["deptID"].value = id;
   document.forms["EditDepartment"]["deptName"].value = name;
   document.forms["EditDepartment"]["deptDesc"].value = desc;
-
-  if(document.forms["EditDepartment"]["deptHead"].value != head){
-    var option = document.createElement("option");
-    option.value = head;
-    option.text = head_name;
-  }
-
-  document.forms["EditDepartment"]["deptHead"].add(option);
-
-  document.forms["EditDepartment"]["deptHead"].value = head;
 }
 
 // Delete Department in Departments Page

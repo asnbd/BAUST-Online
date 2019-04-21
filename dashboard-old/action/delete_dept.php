@@ -8,20 +8,20 @@ include "../../includes/session.php";
 $message_count = NAN;
 
 if ($login_role == 0 || $login_role == 1){  //Owner or Admin
-    if(isset($_POST['deptHead'])){
-        $dept_head = $_POST['deptHead'];
-        $dept_id = $_POST['deptID'];
+    if(isset($_POST['dept_id'])){
+        $dept_id = $_POST['dept_id'];
+        $dept_name = $_POST['dept_name'];
 
-        if(!empty($dept_head)){
-            $sql = "UPDATE department SET head = '$dept_head' WHERE id = '$dept_id'";
+        if(!empty($dept_id)){
+            $sql = "DELETE FROM department WHERE id = '$dept_id'";
 
             if($result = mysqli_query($db_conn, $sql)){
-                $_SESSION['message'] = ["success", "Department Head Successfully Updated!"];
+                $_SESSION['message'] = ["success", "<strong>" . $dept_name . "</strong> Department Successfully Deleted!"];
             } else {
-                $_SESSION['message'] = ["error", "Error Updating Department Head!"];
+                $_SESSION['message'] = ["error", "Error Deleting Department!"];
             }
         } else {
-            $_SESSION['message'] = ["error", "Error Updating Department Head! <strong>Invalid Department Head Name!</strong>"];
+            $_SESSION['message'] = ["error", "Error Deleting Department! <strong>Invalid Department ID!</strong>"];
         }
 
         header("location: ../?p=departments");

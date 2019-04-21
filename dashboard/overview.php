@@ -51,157 +51,82 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <title>BAUST Online - Dashboard</title>
 
-    <link href="css/bootstrap.css" rel="stylesheet">
-
-    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
-<body id="page-top">
+<body>
 
+<!--Header-->
 <?php include "includes/header.php" ?>
 
-<div id="wrapper">
+<!-- Sidebar -->
+<?php $active_page = "dashboard"; include "includes/sidebar.php"; ?>
 
-    <!-- Sidebar -->
-    <?php $active_page = "dashboard"; include "includes/sidebar.php"; ?>
+<div class="content">
+    <ul class="breadcrumb">
+        <li><a href="#">Dashboard</a></li>
+        <li>Overview</li>
+    </ul>
 
-    <div id="content-wrapper">
+    <div class="alert">
+        <span class="closebtn">&times;</span>
+        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+    </div>
 
-        <div class="container-fluid">
-
-            <!-- Breadcrumbs-->
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="#">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active">Overview</li>
-            </ol>
-
-            <!-- Icon Cards-->
-            <div class="row">
-                <?php if($login_role <= 3){ ?>
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-primary o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-comments"></i>
-                            </div>
-                            <div class="mr-5"><?php echo $message_count == 0 ? "No ":$message_count; ?> New Message<?php if($message_count > 1) echo 's'?>!</div>
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
-                            <span class="float-left">View Details</span>
-                            <span class="float-right">
-                                <i class="fas fa-angle-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <?php }?>
-
-                <?php if($login_role <= 3){ ?>
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-warning o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-list"></i>
-                            </div>
-                            <div class="mr-5"><?php echo $dept_count ?> Department<?php if($dept_count > 1) echo 's'?></div>
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="?p=departments">
-                            <span class="float-left">View Details</span>
-                            <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-                        </a>
-                    </div>
-                </div>
-                <?php }?>
-
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-success o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-user-tie"></i>
-                            </div>
-                            <div class="mr-5"><?php echo $teacher_count ?> Teacher<?php if($teacher_count > 1) echo 's'?></div>
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
-                            <span class="float-left">View Details</span>
-                            <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-danger o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-users"></i>
-                            </div>
-                            <div class="mr-5"><?php echo $student_count ?> Student<?php if($student_count > 1) echo 's'?></div>
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="?p=students">
-                            <span class="float-left">View Details</span>
-                            <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-                        </a>
-                    </div>
-                </div>
+    <div class="row">
+        <?php if($login_role <= 3){ ?>
+        <a href="?p=departments">
+            <div class="column bg-blue">
+                <i class="right_icon fas fa-users fa-fw"></i>
+                <div class="big_text"><?php echo $dept_count ?></div>
+                <p>Department<?php if($dept_count > 1) echo 's'?></p>
             </div>
+        </a>
+        <?php }?>
 
-        </div>
-        <!-- /.container-fluid -->
+        <?php if($login_role <= 3){ ?>
+        <a href="#">
+            <div class="column bg-orange">
+                <i class="right_icon fas fa-users fa-fw"></i>
+                <div class="big_text"><?php echo $teacher_count ?></div>
+                <p>Teacher<?php if($teacher_count > 1) echo 's'?></p>
+            </div>
+        </a>
+        <?php }?>
 
-        <!-- Sticky Footer -->
-        <?php include "includes/footer.php" ?>
+        <a href="#">
+            <div class="column bg-green">
+                <i class="right_icon fas fa-users fa-fw"></i>
+                <div class="big_text"><?php echo $student_count ?></div>
+                <p>Student<?php if($student_count > 1) echo 's'?></p>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="column bg-red">
+                <i class="right_icon fas fa-users fa-fw"></i>
+                <div class="big_text">0</div>
+                <p>Admins</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="row">
+
 
     </div>
-    <!-- /.content-wrapper -->
 
-</div>
-<!-- /#wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="../logout.php">Logout</a>
-            </div>
-        </div>
-    </div>
+    <!-- Sticky Footer -->
+    <?php include "includes/footer.php" ?>
 </div>
 
-<!-- JQuery & Bootstrap JavaScript-->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Main JavaScript-->
-<script src="js/script.min.js"></script>
-
+<script src="js/scripts.js" type="text/javascript"></script>
 
 </body>
 

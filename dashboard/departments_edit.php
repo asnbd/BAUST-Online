@@ -25,23 +25,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     }
 
     mysqli_free_result($result);
-
-    if(isset($_POST['deptName'])){
-        $dept_name = $_POST['deptName'];
-        $dept_desc = $_POST['deptDesc'];
-
-        if(!empty($dept_name)){
-            $sql = "INSERT INTO department (name, description) VALUES('$dept_name', '$dept_desc')";
-
-            if($result = mysqli_query($db_conn, $sql)){
-                $_SESSION['message'] = ["success", "Department Add Success!"];
-            } else {
-                $_SESSION['message'] = ["error", "Error Adding Department!"];
-            }
-        } else {
-            $_SESSION['message'] = ["error", "Error Adding Department! <strong>Invalid Department Name!</strong>"];
-        }
-    }
 } else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
@@ -74,8 +57,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
     <div class="content">
         <ul class="breadcrumb">
-            <li><a href="#">Dashboard</a></li>
-            <li>Departments</li>
+            <li><a href="index.php">Dashboard</a></li>
+            <li><a href="?p=departments">Departments</a></li>
+            <li>Edit Department</li>
         </ul>
 
         <?php
@@ -112,10 +96,10 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
         ?>
 
-        <!-- Department Table -->
+        <!-- Department Edit -->
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-table"></i> Departments</div>
+                <i class="fas fa-edit"></i> Edit Department</div>
             <div class="card-body">
                 <p>
                     <form name="AddDepartment" action="?p=departments" method="post" onsubmit="return validateDeptForm()">
@@ -127,41 +111,51 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             * Please enter department name.
                         </div>
                     </form>
+
+                <form action="/action_page.php">
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="fname">First Name</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="lname">Last Name</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="country">Country</label>
+                        </div>
+                        <div class="col-75">
+                            <select id="country" name="country">
+                                <option value="australia">Australia</option>
+                                <option value="canada">Canada</option>
+                                <option value="usa">USA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="subject">Subject</label>
+                        </div>
+                        <div class="col-75">
+                            <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
                 </p>
 
-
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <!--                                <th width='15px'>#</th>-->
-                        <th>Dept. Name</th>
-                        <th>Description</th>
-                        <th>Head</th>
-                        <th>Options</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                    $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
-                    if($result = mysqli_query($db_conn, $sql)){
-                        while ($row = mysqli_fetch_assoc($result)){
-                            $head = $row['head'] == ""?"<button type='button' class='btn btn-sm btn-primary' onclick='assignDept(". $row['id'] . ")'>Assign</button>":$row['head'];
-    //                                        <td style='text-align: center; vertical-align: middle'><input onclick='toggleSelect(this)' type='checkbox'></td>
-                            echo "<tr>
-                                            <td>" . $row['name'] . "</td>
-                                            <td>" . $row['description'] . "</td>
-                                            <td>" . $head . "</td>
-                                            <td> <button type='button' class='btn btn-success btn-sm' onclick='editDept(" . $row['id'] . ", \"" . $row['name'] . "\", \"" . $row['description'] . "\", \"" . $row['username'] . "\", \"" . $row['head'] . "\")'>Edit</button>
-                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteDept(" . $row['id'] . ", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
-                                        </tr>";
-                        }
-                    }
-                    ?>
-
-                    </tbody>
-                </table>
             </div>
-            <!--                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
         </div>
 
 

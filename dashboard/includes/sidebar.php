@@ -6,46 +6,11 @@
  * Time: 3:36 AM
  */
 ?>
-<ul class="sidebar navbar-nav">
-    <li class="nav-item <?php if($active_page == 'dashboard') echo 'active'; ?>">
-        <a class="nav-link" href="index.php">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
-
-    <li class="nav-item <?php if($active_page == 'departments') echo 'active'; ?>">
-        <a class="nav-link" href="?p=departments">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Departments</span></a>
-    </li>
-
-        <!--    <li class="nav-item dropdown">-->
-<!--        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" data-toggle="dropdown">-->
-<!--            <i class="fas fa-fw fa-folder"></i>-->
-<!--            <span>Pages</span>-->
-<!--        </a>-->
-<!--        <div class="dropdown-menu" aria-labelledby="pagesDropdown">-->
-<!--            <h6 class="dropdown-header">Login Screens:</h6>-->
-<!--            <a class="dropdown-item" href="login.html">Login</a>-->
-<!--            <a class="dropdown-item" href="register.html">Register</a>-->
-<!--            <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>-->
-<!--            <div class="dropdown-divider"></div>-->
-<!--            <h6 class="dropdown-header">Other Pages:</h6>-->
-<!--            <a class="dropdown-item" href="404.html">404 Page</a>-->
-<!--            <a class="dropdown-item" href="blank.html">Blank Page</a>-->
-<!--        </div>-->
-<!--    </li>-->
-<!--    -->
-<!--    <li class="nav-item">-->
-<!--        <a class="nav-link" href="charts.html">-->
-<!--            <i class="fas fa-fw fa-chart-area"></i>-->
-<!--            <span>Charts</span></a>-->
-<!--    </li>-->
-<!--    -->
-<!--    <li class="nav-item">-->
-<!--        <a class="nav-link" href="tables.html">-->
-<!--            <i class="fas fa-fw fa-table"></i>-->
-<!--            <span>Tables</span></a>-->
-<!--    </li>-->
-</ul>
+<div class="sidenav">
+    <a <?php if($active_page == 'dashboard') echo 'class="active"'; ?> href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+    <a <?php if($active_page == 'departments') echo 'class="active"'; ?> href="?p=departments"><i class="fas fa-table fa-fw"></i> Departments</a>
+    <a <?php if($active_page == 'teachers') echo 'class="active"'; ?> href="?p=teachers"><i class="fas fa-table fa-fw"></i> Teachers</a>
+    <a <?php if($active_page == 'students') echo 'class="active"'; ?> href="?p=students"><i class="fas fa-table fa-fw"></i> Students</a>
+    <a <?php if($active_page == 'admins') echo 'class="active"'; ?> href="?p=admins"><i class="fas fa-table fa-fw"></i> Admins</a>
+    <a href="#" onclick="modalDisplay('logoutModel', 'block')"><i class="fas fa-sign-out-alt fa-fw"></i> Logout</a>
+</div>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #navbar {
+            overflow: hidden;
+            background-color: #343a40 ;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 2;
+        }
+
+        #navbar .nav-items{
+            float: right;
+        }
+
+        #navbar .nav-items a{
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        #navbar .nav-items a:hover {
+            color: #fff;
+        }
+
+        #navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        #navbar .nav-title a:hover {
+            background-color: #111;
+        }
+
+        .content {
+            padding: 16px;
+            margin-left: 200px;
+            margin-top: 50px;
+            margin-bottom: 80px;
+        }
+
+
+        /*Side Nav*/
+        .sidenav {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            padding-top: 60px;
+            background-color: #212529;
+            overflow-x: hidden;
+        }
+
+        .sidenav a {
+            padding: 10px 8px 10px 16px;
+            text-decoration: none;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .active {
+            color: #FFFFFF;
+        }
+
+
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+
+        footer {
+            display: block;
+        }
+
+        footer.sticky-footer {
+            display: flex;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            width: calc(100% - 200px);
+            height: 80px;
+            background-color: #e9ecef;
+        }
+
+        footer.sticky-footer .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            line-height: 1;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+    </style>
+</head>
+<body>
+
+
+<div id="navbar">
+    <div class="nav-title">
+        <a href="index.html">BAUST Online</a>
+    </div>
+    <div class="nav-items">
+        <a href="#"><i class="fas fa-user-circle fa-fw"></i></a>
+        <a href="#"><i class="fas fa-sign-out-alt fa-fw"></i></a>
+    </div>
+</div>
+
+<div class="sidenav">
+    <a class="active" href="#about"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+    <a href="#services"><i class="fas fa-table fa-fw"></i> Departments</a>
+    <a href="#services"><i class="fas fa-table fa-fw"></i> Teachers</a>
+    <a href="#services"><i class="fas fa-table fa-fw"></i> Students</a>
+    <a href="#services"><i class="fas fa-table fa-fw"></i> Admins</a>
+    <a href="#services"><i class="fas fa-table fa-fw"></i> Courses</a>
+    <a href="#services"><i class="fas fa-table fa-fw"></i> Semesters</a>
+    <a href="#services"><i class="fas fa-table fa-fw"></i> Profile</a>
+    <a href="#"><i class="fas fa-sign-out-alt fa-fw"></i> Logout</a>
+</div>
+
+<div class="content">
+    Hello dfafd asdf sdf sad f
+    asdsadsa
+    dsad<br>
+    asdasd<br>
+    asdasdsdad
+    <br>
+    asdsadsadasdasdasdsadasdasdasd
+
+    <footer class="sticky-footer">
+        <div class="container">
+            Copyright © BAUST Online 2019
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
