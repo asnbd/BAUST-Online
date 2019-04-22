@@ -101,19 +101,49 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
             <div class="card-body">
                 <div class="data-table-head">
                     <div class="row">
-                        <div class="col-75">
+                        <div class="col-25">
                             <a href="?p=add_teacher"><button type='button' class='btn btn-primary'>Add Teacher</button><br></a>
                         </div>
-                        <div class="col-25">
-                            <form name="SearchDepartment" action="" method="get" onsubmit="return validateSearchForm()">
-                                <input type="hidden" name="p" value="teachers">
-                                <input type="text" style="min-width: 200px; width: 30%" name="search" placeholder="Search For..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
+                        <div class="col-75">
+                            <div class="f-right">
+                                <form name="SearchDepartment" action="" method="get">
+                                    <input type="hidden" name="p" value="teachers">
+                                    <select name="dept" id="dept">
+                                        <option value="" <?php if(isset($_GET['dept']) && $_GET['dept'] == "") echo 'selected' ?>>All Department</option>
+                                        <?php
 
-                                <button type='submit' class='btn btn-primary'>Search</button><br>
-                                <div id="invalid-dept" class="invalid-feedback">
-                                    * Please enter Search Text.
-                                </div>
-                            </form>
+
+                                        $sql = "SELECT id, name FROM department";
+                                        //                            $sql = "SELECT username, name FROM teacher";
+
+                                        if($result = mysqli_query($db_conn, $sql)){
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_assoc($result)){
+                                                    if(isset($_GET['dept']) && $_GET['dept'] == $row['id']){
+                                                        echo "<option value='" . $row['id'] . "' selected>" . $row['name'] . "</option>";
+                                                    } else {
+                                                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                                    }
+
+                                                }
+                                            } else {
+
+                                            }
+                                        } else {
+                                            die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                                        }
+                                        ?>
+                                    </select>
+
+                                    <input type="text" style="min-width: 200px; width: 30%" name="search" placeholder="Search For..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
+
+                                    <button type='submit' class='btn btn-primary'>Search</button><br>
+                                    <div id="invalid-dept" class="invalid-feedback">
+                                        * Please enter Search Text.
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
 
@@ -129,6 +159,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         <th>Name</th>
                         <th>Designation</th>
                         <th>Department</th>
+                        <th>Email</th>
                         <th>Phone</th>
                         <th>Options</th>
                     </tr>
@@ -137,7 +168,12 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     <?php
                     if(isset($_GET['search'])){
                         $search = $_GET['search'];
-                        $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE teacher.name LIKE '%$search%' ORDER BY dept_name, teacher.designation, teacher.name";
+                        $dept = isset($_GET['dept'])?$_GET['dept']:"";
+                        if($dept == ""){
+                            $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE (teacher.name LIKE '%$search%' OR teacher.phone LIKE '%$search%') ORDER BY dept_name, teacher.designation, teacher.name";
+                        } else {
+                            $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE (teacher.department = $dept) AND (teacher.name LIKE '%$search%' OR teacher.phone LIKE '%$search%') ORDER BY dept_name, teacher.designation, teacher.name";
+                        }
                         if($result = mysqli_query($db_conn, $sql)){
                             if(mysqli_num_rows($result)){
                                 while ($row = mysqli_fetch_assoc($result)){
@@ -145,6 +181,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['designation'] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $row['email'] . "</td>
                                             <td>" . $row['phone'] . "</td>
                                             
                                             <td> <a href='?p=edit_teacher&id=". $row['username'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
@@ -152,20 +189,21 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                         </tr>";
                                 }
                             } else{
-                                echo "<tr><td colspan='5'><center>No Teachers Found<center></td></tr>";
+                                echo "<tr><td colspan='6'><center>No Teachers Found<center></td></tr>";
                             }
 
                         } else {
-                            echo "<tr><td colspan='5'><center>Database Error!<center></td></tr>";
+                            echo "<tr><td colspan='6'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
                         }
                     } else {
-                        $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE active = 1 ORDER BY dept_name, teacher.designation, teacher.name";
+                        $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE active = 1 ORDER BY dept_name, teacher.designation, teacher.name";
                         if($result = mysqli_query($db_conn, $sql)){
                             while ($row = mysqli_fetch_assoc($result)){
                                 echo "<tr>
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['designation'] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $row['email'] . "</td>
                                             <td>" . $row['phone'] . "</td>
                                             
                                             <td> <a href='?p=edit_teacher&id=". $row['username'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
@@ -173,7 +211,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                         </tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='5'><center>No Teachers<center></td></tr>";
+                            echo "<tr><td colspan='6'><center>No Teachers<center></td></tr>";
                         }
                     }
                     ?>

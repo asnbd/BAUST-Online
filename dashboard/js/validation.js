@@ -37,12 +37,13 @@ function validateTeacherForm() {
     var teacher_name = document.forms["AddTeacher"]["teacherName"];
 
     teacher_name.classList.remove("invalid-input");
-    teacher_name.getElementsByClassName("").style.display = "none";
+    teacher_name.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
 
-    if(dept_name.value == ""){
-        document.getElementById("invalid-dept").style.display = "block";
-        dept_name.classList.add("invalid-input");
-        dept_name.focus();
+    if(teacher_name.value == ""){
+        // document.getElementById("invalid-dept").style.display = "block";
+        teacher_name.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        teacher_name.classList.add("invalid-input");
+        teacher_name.focus();
         return false;
     }
 
