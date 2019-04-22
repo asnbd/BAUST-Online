@@ -331,13 +331,13 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherName">Teacher Name</label>
+                            <label for="teacherPhoto">Photo</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name">
+                            <input type="text" name="teacherPhoto" id="teacherPhoto" placeholder="Browse..">
                             <div class="invalid-feedback">
-                                * Please enter teacher name.
+                                * Please enter Photo.
                             </div>
                         </div>
                     </div>
