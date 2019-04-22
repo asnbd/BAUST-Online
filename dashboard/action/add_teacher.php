@@ -21,9 +21,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         $teacher_designation = $_POST['teacherDesignation'];
         $teacher_department = $_POST['teacherDepartment'];
 
-        if(!empty($teacher_username) || !empty($teacher_name) || !empty($teacher_email) || !empty($teacher_address)
-            || !empty($teacher_district) || !empty($teacher_phone) || !empty($teacher_gender)
-            || !empty($teacher_birthdate) || !empty($teacher_department) || !empty($teacher_designation)){
+        if(!empty($teacher_username) && !empty($teacher_name) && !empty($teacher_email) && !empty($teacher_address)
+            && !empty($teacher_district) && !empty($teacher_phone) && !empty($teacher_gender)
+            && !empty($teacher_birthdate) && !empty($teacher_department) && !empty($teacher_designation)){
             $sql = "INSERT INTO teacher (username, name, email, address, district, phone, gender, birthdate, photo, designation, department, active) VALUES (
                     '$teacher_username',
                     '$teacher_name',
