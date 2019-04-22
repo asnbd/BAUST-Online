@@ -153,24 +153,16 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </div>
                         <div class="col-75">
                             <select name="teacherDepartment" id="teacherDepartment">
-                                <option value="">Choose...</option>
-                                <?php
-                                if($dept_row['username'] == ""){
-                                    echo '<option value="-1" selected>Not Assigned</option>';
-                                } else {
-                                    echo '<option value="-1">Not Assigned</option>';
-                                    echo '<option value="'. $dept_row['username'] . '" selected>'.$dept_row['head'] . '</option>';
-                                }
-                                ?>
+                                <option value="" selected>Choose...</option>
 
                                 <?php
-                                $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
+                                $sql = "SELECT id, name FROM department";
                                 //                            $sql = "SELECT username, name FROM teacher";
 
                                 if($result = mysqli_query($db_conn, $sql)){
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_assoc($result)){
-                                            echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
+                                            echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                                         }
                                     } else {
 
