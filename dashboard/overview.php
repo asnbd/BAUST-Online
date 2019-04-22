@@ -76,14 +76,14 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
     <div class="alert">
         <span class="closebtn">&times;</span>
-        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+        <strong>Welcome!</strong> to BAUST Online Dashboard
     </div>
 
     <div class="row">
         <?php if($login_role <= 3){ ?>
         <a href="?p=departments">
             <div class="column bg-blue">
-                <i class="right_icon fas fa-users fa-fw"></i>
+                <i class="right_icon fas fa-list fa-fw"></i>
                 <div class="big_text"><?php echo $dept_count ?></div>
                 <p>Department<?php if($dept_count > 1) echo 's'?></p>
             </div>
@@ -91,16 +91,16 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         <?php }?>
 
         <?php if($login_role <= 3){ ?>
-        <a href="#">
+        <a href="?p=teachers">
             <div class="column bg-orange">
-                <i class="right_icon fas fa-users fa-fw"></i>
+                <i class="right_icon fas fa-chalkboard-teacher fa-fw"></i>
                 <div class="big_text"><?php echo $teacher_count ?></div>
                 <p>Teacher<?php if($teacher_count > 1) echo 's'?></p>
             </div>
         </a>
         <?php }?>
 
-        <a href="#">
+        <a href="?p=students">
             <div class="column bg-green">
                 <i class="right_icon fas fa-users fa-fw"></i>
                 <div class="big_text"><?php echo $student_count ?></div>
@@ -108,9 +108,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
             </div>
         </a>
 
-        <a href="#">
+        <a href="?p=admins">
             <div class="column bg-red">
-                <i class="right_icon fas fa-users fa-fw"></i>
+                <i class="right_icon fas fa-user-cog fa-fw"></i>
                 <div class="big_text">0</div>
                 <p>Admins</p>
             </div>

@@ -15,8 +15,14 @@ switch ($page) {
     case 'edit_dept':
         $url = 'departments_edit.php';
         break;
-    case 'teacher':
-        $url = 'teacher.php';
+    case 'teachers':
+        $url = 'teachers.php';
+        break;
+    case 'add_teacher':
+        $url = 'teachers_add.php';
+        break;
+    case 'edit_teacher':
+        $url = 'teachers_edit.php';
         break;
     case 'overview':
         $url = 'overview.php';
