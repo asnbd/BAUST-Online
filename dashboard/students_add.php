@@ -175,7 +175,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="studentBirthdate" id="studentBirthdate" placeholder="DD-MM-YYYY">
+                            <input type="date" name="studentBirthdate" id="studentBirthdate" placeholder="">
                             <div class="invalid-feedback">
                                 * Please enter Birthdate.
                             </div>
