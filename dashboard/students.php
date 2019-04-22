@@ -211,7 +211,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             } else{
                                 echo "<tr><td colspan='7'><center>No Students Found<center></td></tr>";
                             }
-
                         } else {
                             echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
                         }
