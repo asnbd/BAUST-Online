@@ -106,25 +106,25 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <form class="form-group" name="AddTeacher" action="action/add_teacher.php" method="post" onsubmit="return validateTeacherForm()">
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherUsername">Teacher Username</label>
+                            <label for="teacherUsername">Username</label>
 
                         </div>
                         <div class="col-75">
                             <input type="text" name="teacherUsername" id="teacherUsername" placeholder="Enter Teacher Username">
                             <div class="invalid-feedback">
-                                * Please enter teacher username.
+                                * Please enter username.
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherName">Teacher Name</label>
+                            <label for="teacherName">Name</label>
 
                         </div>
                         <div class="col-75">
                             <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name">
                             <div class="invalid-feedback">
-                                * Please enter teacher name.
+                                * Please enter name.
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                 <option value="Lecturer">Lecturer</option>
                             </select>
                             <div class="invalid-feedback">
-                                * Please enter teacher Designation.
+                                * Please select a designation.
                             </div>
                         </div>
                     </div>
@@ -173,7 +173,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                 ?>
                             </select>
                             <div class="invalid-feedback">
-                                * Please enter Department.
+                                * Please select a department.
                             </div>
                         </div>
                     </div>
@@ -187,10 +187,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                 <option value="" selected>Choose...</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Other">Other</option>
                             </select>
                             <div class="invalid-feedback">
-                                * Please enter Gender.
+                                * Please select a gender.
                             </div>
                         </div>
                     </div>
@@ -200,9 +199,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherBirthdate" id="teacherBirthdate" placeholder="DD-MM-YYYY">
+                            <input type="date" name="teacherBirthdate" id="teacherBirthdate" placeholder="DD-MM-YYYY">
                             <div class="invalid-feedback">
-                                * Please enter Birthdate.
+                                * Please enter birthdate.
                             </div>
                         </div>
                     </div>
@@ -317,7 +316,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                             </select>
                             <div class="invalid-feedback">
-                                * Please enter District.
+                                * Please select a district.
                             </div>
                         </div>
                     </div>
@@ -329,7 +328,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         <div class="col-75">
                             <input type="text" name="teacherPhoto" id="teacherPhoto" placeholder="Browse..">
                             <div class="invalid-feedback">
-                                * Please enter Photo.
+                                * Please choose a photo.
                             </div>
                         </div>
                     </div>

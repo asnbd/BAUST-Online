@@ -19,8 +19,8 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     $sql = "SELECT
             (SELECT COUNT(*) FROM department) AS dept,
             (SELECT COUNT(*) FROM course) AS course,
-            (SELECT COUNT(*) FROM student) AS student,
-            (SELECT COUNT(*) FROM teacher) AS teacher,
+            (SELECT COUNT(*) FROM student WHERE active = 1) AS student,
+            (SELECT COUNT(*) FROM teacher WHERE active = 1) AS teacher,
             (SELECT COUNT(*) FROM message WHERE msg_to = '$login_user' AND unread = 1) AS message
             FROM DUAL";
 

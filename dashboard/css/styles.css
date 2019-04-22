@@ -432,7 +432,7 @@ tr:hover {background-color: #f5f5f5;}
 }
 
 /*Input Form*/
-input[type=text], select, textarea {
+input[type=text], input[type=date], select, textarea {
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -451,7 +451,7 @@ select{
     resize: vertical;
 }
 
-input[type=text].invalid-input, select.invalid-input, textarea.invalid-input{
+input[type=text].invalid-input, input[type=date].invalid-input, select.invalid-input, textarea.invalid-input{
     border: 1px solid red; !important;
 }
 
