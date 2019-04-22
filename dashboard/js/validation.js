@@ -230,17 +230,17 @@ function validateStudentForm() {
         return false;
     }
 
-    if(studentSemester.value == ""){
-        studentSemester.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentSemester.classList.add("invalid-input");
-        studentSemester.focus();
+    if(studentEmail.value == ""){
+        studentEmail.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        studentEmail.classList.add("invalid-input");
+        studentEmail.focus();
         return false;
     }
 
-    if(studentDepartment.value == ""){
-        studentDepartment.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentDepartment.classList.add("invalid-input");
-        studentDepartment.focus();
+    if(studentPhone.value == ""){
+        studentPhone.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        studentPhone.classList.add("invalid-input");
+        studentPhone.focus();
         return false;
     }
 
@@ -258,20 +258,6 @@ function validateStudentForm() {
         return false;
     }
 
-    if(studentEmail.value == ""){
-        studentEmail.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentEmail.classList.add("invalid-input");
-        studentEmail.focus();
-        return false;
-    }
-
-    if(studentPhone.value == ""){
-        studentPhone.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentPhone.classList.add("invalid-input");
-        studentPhone.focus();
-        return false;
-    }
-
     if(studentAddress.value == ""){
         studentAddress.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
         studentAddress.classList.add("invalid-input");
@@ -283,6 +269,20 @@ function validateStudentForm() {
         studentDistrict.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
         studentDistrict.classList.add("invalid-input");
         studentDistrict.focus();
+        return false;
+    }
+
+    if(studentDepartment.value == ""){
+        studentDepartment.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        studentDepartment.classList.add("invalid-input");
+        studentDepartment.focus();
+        return false;
+    }
+
+    if(studentSemester.value == ""){
+        studentSemester.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        studentSemester.classList.add("invalid-input");
+        studentSemester.focus();
         return false;
     }
 
