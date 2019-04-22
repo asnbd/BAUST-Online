@@ -209,11 +209,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                         </tr>";
                                 }
                             } else{
-                                echo "<tr><td colspan='6'><center>No Students Found<center></td></tr>";
+                                echo "<tr><td colspan='7'><center>No Students Found<center></td></tr>";
                             }
 
                         } else {
-                            echo "<tr><td colspan='6'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
+                            echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
                         }
                     } else {
                         $sql = "SELECT student.student_id,
@@ -225,8 +225,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                 LEFT JOIN department ON department.id = student.department
                                 WHERE active = 1";
                         if($result = mysqli_query($db_conn, $sql)){
-                            while ($row = mysqli_fetch_assoc($result)){
-                                echo "<tr>
+                            if(mysqli_num_rows($result)){
+                                while ($row = mysqli_fetch_assoc($result)){
+                                    echo "<tr>
                                             <td>" . $row['student_id'] . "</td>
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
@@ -237,9 +238,12 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                             <td> <a href='?p=edit_student&id=". $row['student_id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
                                             <button type='button' class='btn btn-danger btn-sm' onclick='deleteStudent(\"" . $row['student_id'] . "\", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
+                                }
+                            }else {
+                                echo "<tr><td colspan='7'><center>No Students<center></td></tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6'><center>No Students<center></td></tr>";
+                            echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) . "<center></td></tr>";
                         }
                     }
                     ?>
