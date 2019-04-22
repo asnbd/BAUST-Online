@@ -48,10 +48,18 @@ function deleteDept(id, name) {
     document.getElementById("dept_name_text").innerHTML = name;
 }
 
-// Delete Teacher in Departments Page
+// Delete Teacher in Teachers Page
 function deleteTeacher(id, name) {
     deleteTeacherModal.style.display = "block";
     document.forms["DeleteTeacher"]["teacher_id"].value = id;
     document.forms["DeleteTeacher"]["teacher_name"].value = name;
+    document.getElementById("name_text").innerHTML = name;
+}
+
+// Delete Students in Students Page
+function deleteStudent(id, name) {
+    deleteStudentModal.style.display = "block";
+    document.forms["DeleteStudent"]["student_id"].value = id;
+    document.forms["DeleteStudent"]["student_name"].value = name;
     document.getElementById("name_text").innerHTML = name;
 }

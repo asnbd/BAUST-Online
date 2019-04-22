@@ -12,6 +12,17 @@ $login_user = NAN;
 require_once "../includes/db.php";
 include "../includes/session.php";
 
+$semester = [
+        1 => "Level 1, Term I",
+        2 => "Level 1, Term II",
+        3 => "Level 2, Term I",
+        4 => "Level 2, Term II",
+        5 => "Level 3, Term I",
+        6 => "Level 3, Term II",
+        7 => "Level 4, Term I",
+        8 => "Level 4, Term II"
+];
+
 $message_count = NAN;
 
 if ($login_role == 0 || $login_role == 1){  //Owner or Admin
@@ -51,14 +62,14 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <?php include "includes/header.php" ?>
 
     <!-- Sidebar -->
-    <?php $active_page = "teachers"; include "includes/sidebar.php"; ?>
+    <?php $active_page = "students"; include "includes/sidebar.php"; ?>
 
     <?php include "includes/header.php" ?>
 
     <div class="content">
         <ul class="breadcrumb">
             <li><a href="index.php">Dashboard</a></li>
-            <li>Teachers</li>
+            <li>Students</li>
         </ul>
 
         <?php
@@ -95,26 +106,23 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
         ?>
 
-        <!-- Teachers Table -->
+        <!-- Students Table -->
         <div class="card">
-            <div class="card-header"><i class="fas fa-table"></i> Teachers</div>
+            <div class="card-header"><i class="fas fa-table"></i> Students</div>
             <div class="card-body">
                 <div class="data-table-head">
                     <div class="row">
                         <div class="col-25">
-                            <a href="?p=add_teacher"><button type='button' class='btn btn-primary'>Add Teacher</button><br></a>
+                            <a href="?p=add_student"><button type='button' class='btn btn-primary'>Add Student</button><br></a>
                         </div>
                         <div class="col-75">
                             <div class="f-right">
                                 <form name="SearchDepartment" action="" method="get">
-                                    <input type="hidden" name="p" value="teachers">
+                                    <input type="hidden" name="p" value="students">
                                     <select name="dept" id="dept">
                                         <option value="" <?php if(isset($_GET['dept']) && $_GET['dept'] == "") echo 'selected' ?>>All Department</option>
                                         <?php
-
-
                                         $sql = "SELECT id, name FROM department";
-                                        //                            $sql = "SELECT username, name FROM teacher";
 
                                         if($result = mysqli_query($db_conn, $sql)){
                                             if(mysqli_num_rows($result) > 0){
@@ -156,9 +164,10 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     <thead>
                     <tr>
                         <!--                                <th width='15px'>#</th>-->
+                        <th>ID</th>
                         <th>Name</th>
-                        <th>Designation</th>
                         <th>Department</th>
+                        <th>Semester</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Options</th>
@@ -170,48 +179,67 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         $search = $_GET['search'];
                         $dept = isset($_GET['dept'])?$_GET['dept']:"";
                         if($dept == ""){
-                            $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE (teacher.name LIKE '%$search%' OR teacher.phone LIKE '%$search%') ORDER BY dept_name, teacher.designation, teacher.name";
+                            $sql = "SELECT student.student_id, student.name,
+                                    student.semester, student.email,
+                                    student.phone, student.department,
+                                    department.name AS dept_name
+                                    FROM student LEFT JOIN department ON department.id = student.department
+                                    WHERE (active = 1) AND (student.name LIKE '%$search%' OR student.phone LIKE '%$search%')";
                         } else {
-                            $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE (teacher.department = $dept) AND (teacher.name LIKE '%$search%' OR teacher.phone LIKE '%$search%') ORDER BY dept_name, teacher.designation, teacher.name";
+                            $sql = "SELECT student.student_id, student.name,
+                                    student.semester, student.email,
+                                    student.phone, student.department,
+                                    department.name AS dept_name
+                                    FROM student LEFT JOIN department ON department.id = student.department
+                                    WHERE (active = 1) AND (student.department = '$dept') AND (student.name LIKE '%$search%' OR student.phone LIKE '%$search%')";
                         }
                         if($result = mysqli_query($db_conn, $sql)){
                             if(mysqli_num_rows($result)){
                                 while ($row = mysqli_fetch_assoc($result)){
                                     echo "<tr>
+                                            <td>" . $row['student_id'] . "</td>
                                             <td>" . $row['name'] . "</td>
-                                            <td>" . $row['designation'] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
                                             <td>" . $row['email'] . "</td>
                                             <td>" . $row['phone'] . "</td>
                                             
-                                            <td> <a href='?p=edit_teacher&id=". $row['username'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
-                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteTeacher(\"" . $row['username'] . "\", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
+                                            <td> <a href='?p=edit_student&id=". $row['student_id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteStudent(\"" . $row['student_id'] . "\", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                                 }
                             } else{
-                                echo "<tr><td colspan='6'><center>No Teachers Found<center></td></tr>";
+                                echo "<tr><td colspan='6'><center>No Students Found<center></td></tr>";
                             }
 
                         } else {
                             echo "<tr><td colspan='6'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
                         }
                     } else {
-                        $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE active = 1 ORDER BY dept_name, teacher.designation, teacher.name";
+                        $sql = "SELECT student.student_id,
+                                student.name, student.semester,
+                                student.email, student.phone,
+                                student.department,
+                                department.name AS dept_name
+                                FROM student
+                                LEFT JOIN department ON department.id = student.department
+                                WHERE active = 1";
                         if($result = mysqli_query($db_conn, $sql)){
                             while ($row = mysqli_fetch_assoc($result)){
                                 echo "<tr>
+                                            <td>" . $row['student_id'] . "</td>
                                             <td>" . $row['name'] . "</td>
-                                            <td>" . $row['designation'] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
                                             <td>" . $row['email'] . "</td>
                                             <td>" . $row['phone'] . "</td>
                                             
-                                            <td> <a href='?p=edit_teacher&id=". $row['username'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
-                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteTeacher(\"" . $row['username'] . "\", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
+                                            <td> <a href='?p=edit_student&id=". $row['student_id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteStudent(\"" . $row['student_id'] . "\", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6'><center>No Teachers<center></td></tr>";
+                            echo "<tr><td colspan='6'><center>No Students<center></td></tr>";
                         }
                     }
                     ?>
@@ -228,69 +256,23 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         <?php include "includes/footer.php" ?>
     </div>
 
-    <!-- Delete Teacher Modal -->
-    <div id="deleteTeacherModal" class="modal">
+    <!-- Delete Student Modal -->
+    <div id="deleteStudentModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close" onclick="modalDisplay('deleteTeacherModal', 'none')">&times;</span>
-                <h2>Delete Teacher</h2>
+                <span class="close" onclick="modalDisplay('deleteStudentModal', 'none')">&times;</span>
+                <h2>Delete Student</h2>
             </div>
             <div class="modal-body">
-                <p>Select "Delete" below if you want to delete <strong id="name_text">the selected</strong> teacher.</p>
+                <p>Select "Delete" below if you want to delete <strong id="name_text">the selected</strong> student.</p>
             </div>
             <div class="modal-footer">
-                <form name="DeleteTeacher" action="action/delete_teacher.php" method="post">
-                    <input name="teacher_id" type="hidden">
-                    <input name="teacher_name" type="hidden">
+                <form name="DeleteStudent" action="action/delete_student.php" method="post">
+                    <input name="student_id" type="hidden">
+                    <input name="student_name" type="hidden">
                     <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
-                <button class="btn btn-secondary" type="button" onclick="modalDisplay('deleteTeacherModal', 'none')">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Assign Department Head Modal -->
-    <div id="assignDeptHeadModel" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" onclick="modalDisplay('assignDeptHeadModel', 'none')">&times;</span>
-                <h2>Assign Department Head</h2>
-            </div>
-            <div class="modal-body">
-                <p>
-                    <form name="AssignDepartmentHead" action="action/assign_dept_head.php" method="post" onsubmit="return validateDeptHeadForm()">
-                        <label for="departmentHead">Department Head</label>
-                        <br><br>
-                        <select name="deptHead" id="departmentHead">
-                            <option value="" selected>Choose...</option>
-                            <?php
-                            $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
-                            //                            $sql = "SELECT username, name FROM teacher";
-
-                            if($result = mysqli_query($db_conn, $sql)){
-                                if(mysqli_num_rows($result) > 0){
-                                    while($row = mysqli_fetch_assoc($result)){
-                                        echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
-                                    }
-                                } else {
-
-                                }
-                            } else {
-                                die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
-                            }
-                            ?>
-                        </select>
-                        <div id="invalid-dept-head" class="invalid-feedback">
-                            * Please select a department head.
-                        </div>
-                        <br><br>
-                        <input name="deptID" type="hidden">
-                        <button type="submit" class="btn btn-primary">Assign</button>
-                    </form>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" onclick="modalDisplay('assignDeptHeadModel', 'none')">Cancel</button>
+                <button class="btn btn-secondary" type="button" onclick="modalDisplay('deleteStudentModal', 'none')">Cancel</button>
             </div>
         </div>
     </div>

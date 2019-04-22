@@ -52,15 +52,15 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <?php include "includes/header.php" ?>
 
     <!-- Sidebar -->
-    <?php $active_page = "teachers"; include "includes/sidebar.php"; ?>
+    <?php $active_page = "students"; include "includes/sidebar.php"; ?>
 
     <?php include "includes/header.php" ?>
 
     <div class="content">
         <ul class="breadcrumb">
             <li><a href="index.php">Dashboard</a></li>
-            <li><a href="?p=teachers">Teachers</a></li>
-            <li>Add Teacher</li>
+            <li><a href="?p=students">Students</a></li>
+            <li>Add Student</li>
         </ul>
 
         <?php
@@ -100,7 +100,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         <!-- Department Edit -->
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-edit"></i> Add Teacher</div>
+                <i class="fas fa-edit"></i> Add Student</div>
             <div class="card-body">
                 <p>
                 <form class="form-group" name="AddStudent" action="action/add_student.php" method="post" onsubmit="return validateStudentForm()">
@@ -311,14 +311,14 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         <div class="col-75">
                             <select name="studentSemester" id="studentSemester">
                                 <option value="" selected>Choose...</option>
-                                <option value="Level:1 Term:I">Level:1 Term:I</option>
-                                <option value="Level:1 Term:II">Level:1 Term:II</option>
-                                <option value="Level:2 Term:I">Level:2 Term:I</option>
-                                <option value="Level:2 Term:II">Level:2 Term:II</option>
-                                <option value="Level:3 Term:I">Level:3 Term:I</option>
-                                <option value="Level:3 Term:II">Level:3 Term:II</option>
-                                <option value="Level:4 Term:I">Level:4 Term:I</option>
-                                <option value="Level:4 Term:II">Level:4 Term:II</option>
+                                <option value="1">Level 1, Term I</option>
+                                <option value="2">Level 1, Term II</option>
+                                <option value="3">Level 2, Term I</option>
+                                <option value="4">Level 2, Term II</option>
+                                <option value="5">Level 3, Term I</option>
+                                <option value="6">Level 3, Term II</option>
+                                <option value="7">Level 4, Term I</option>
+                                <option value="8">Level 4, Term II</option>
                             </select>
                             <div class="invalid-feedback">
                                 * Please select a semester.
