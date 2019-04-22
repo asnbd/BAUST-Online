@@ -51,7 +51,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <?php include "includes/header.php" ?>
 
     <!-- Sidebar -->
-    <?php $active_page = "students"; include "includes/sidebar.php"; ?>
+    <?php $active_page = "courses"; include "includes/sidebar.php"; ?>
 
     <?php include "includes/header.php" ?>
 
@@ -202,10 +202,23 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         <div class="col-75">
                             <select name="courseTeacher" id="courseTeacher">
                                 <option value="" selected>Choose...</option>
-                                <option value="1">Mr 1</option>
-                                <option value="2">Mr 2</option>
-                                <option value="3">Ms 1</option>
-                                <option value="4">Ms 2</option>
+
+                                <?php
+                                $sql = "SELECT username, name FROM teacher ORDER BY name";
+                                //                            $sql = "SELECT username, name FROM teacher";
+
+                                if($result = mysqli_query($db_conn, $sql)){
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_assoc($result)){
+                                            echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
+                                        }
+                                    } else {
+
+                                    }
+                                } else {
+                                    die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                                }
+                                ?>
                             </select>
                             <div class="invalid-feedback">
                                 * Please select teacher.

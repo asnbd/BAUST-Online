@@ -23,6 +23,9 @@ var deleteDeptModal = document.getElementById("deleteDeptModel");
 var logoutModal = document.getElementById("logoutModel");
 var assignDeptHeadModal = document.getElementById("assignDeptHeadModel");
 var deleteTeacherModal = document.getElementById("deleteTeacherModal");
+var deleteCourseModal = document.getElementById("deleteCourseModal");
+var deleteStudentModal = document.getElementById("deleteStudentModal");
+
 window.onclick = function(event) {
     if (event.target == deleteDeptModal) {
         deleteDeptModal.style.display = "none";
@@ -61,5 +64,13 @@ function deleteStudent(id, name) {
     deleteStudentModal.style.display = "block";
     document.forms["DeleteStudent"]["student_id"].value = id;
     document.forms["DeleteStudent"]["student_name"].value = name;
+    document.getElementById("name_text").innerHTML = name;
+}
+
+// Delete Course
+function deleteCourse(id, name) {
+    deleteCourseModal.style.display = "block";
+    document.forms["DeleteCourse"]["course_code"].value = id;
+    document.forms["DeleteCourse"]["course_title"].value = name;
     document.getElementById("name_text").innerHTML = name;
 }

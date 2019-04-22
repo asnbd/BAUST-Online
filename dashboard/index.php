@@ -36,6 +36,9 @@ switch ($page) {
     case 'courses':
         $url = 'courses.php';
         break;
+    case 'add_course':
+        $url = 'courses_add.php';
+        break;
     case 'overview':
         $url = 'overview.php';
         break;

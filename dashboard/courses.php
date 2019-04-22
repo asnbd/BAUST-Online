@@ -12,6 +12,17 @@ $login_user = NAN;
 require_once "../includes/db.php";
 include "../includes/session.php";
 
+$semester = [
+        1 => "Level 1, Term I",
+        2 => "Level 1, Term II",
+        3 => "Level 2, Term I",
+        4 => "Level 2, Term II",
+        5 => "Level 3, Term I",
+        6 => "Level 3, Term II",
+        7 => "Level 4, Term I",
+        8 => "Level 4, Term II"
+];
+
 $message_count = NAN;
 
 if ($login_role == 0 || $login_role == 1){  //Owner or Admin
@@ -25,23 +36,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     }
 
     mysqli_free_result($result);
-
-    if(isset($_POST['deptName'])){
-        $dept_name = $_POST['deptName'];
-        $dept_desc = $_POST['deptDesc'];
-
-        if(!empty($dept_name)){
-            $sql = "INSERT INTO department (name, description) VALUES('$dept_name', '$dept_desc')";
-
-            if($result = mysqli_query($db_conn, $sql)){
-                $_SESSION['message'] = ["success", "Department Add Success!"];
-            } else {
-                $_SESSION['message'] = ["error", "Error Adding Department!"];
-            }
-        } else {
-            $_SESSION['message'] = ["error", "Error Adding Department! <strong>Invalid Department Name!</strong>"];
-        }
-    }
 } else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
@@ -58,7 +52,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -112,98 +106,150 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
         ?>
 
-        <!-- Course Table -->
+        <!-- Courses Table -->
         <div class="card">
-            <div class="card-header">
-                <i class="fas fa-table"></i> Courses</div>
+            <div class="card-header"><i class="fas fa-table"></i> Courses</div>
             <div class="card-body">
-                <p>
-                <div class="row">
-                    <div class="col-25">
-                        <a href="?p=add_course"><button type='button' class='btn btn-primary'>Add Course</button><br></a>
-                    </div>
-                    <div class="col-75">
-                        <div class="f-right">
-                            <form name="SearchStudent" action="" method="get">
-                                <input type="hidden" name="p" value="students">
-                                <select name="dept" id="dept">
-                                    <option value="" <?php if(isset($_GET['dept']) && $_GET['dept'] == "") echo 'selected' ?>>All Department</option>
-                                    <?php
-                                    $sql = "SELECT id, name FROM department";
+                <div class="data-table-head">
+                    <div class="row">
+                        <div class="col-25">
+                            <a href="?p=add_course"><button type='button' class='btn btn-primary'>Add Course</button><br></a>
+                        </div>
+                        <div class="col-75">
+                            <div class="f-right">
+                                <form name="SearchCourse" action="" method="get">
+                                    <input type="hidden" name="p" value="courses">
+                                    <select name="dept" id="dept">
+                                        <option value="" <?php if(isset($_GET['dept']) && $_GET['dept'] == "") echo 'selected' ?>>All Department</option>
+                                        <?php
+                                        $sql = "SELECT id, name FROM department";
 
-                                    if($result = mysqli_query($db_conn, $sql)){
-                                        if(mysqli_num_rows($result) > 0){
-                                            while($row = mysqli_fetch_assoc($result)){
-                                                if(isset($_GET['dept']) && $_GET['dept'] == $row['id']){
-                                                    echo "<option value='" . $row['id'] . "' selected>" . $row['name'] . "</option>";
-                                                } else {
-                                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                        if($result = mysqli_query($db_conn, $sql)){
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_assoc($result)){
+                                                    if(isset($_GET['dept']) && $_GET['dept'] == $row['id']){
+                                                        echo "<option value='" . $row['id'] . "' selected>" . $row['name'] . "</option>";
+                                                    } else {
+                                                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                                    }
+
                                                 }
+                                            } else {
 
                                             }
                                         } else {
-
+                                            die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
                                         }
-                                    } else {
-                                        die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
-                                    }
-                                    ?>
-                                </select>
+                                        ?>
+                                    </select>
 
-                                <select name="semester" id="semester">
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "") echo "selected" ?>  value="">All Semester</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "1") echo "selected" ?> value="1">Level 1, Term I</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "2") echo "selected" ?> value="2">Level 1, Term II</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "3") echo "selected" ?> value="3">Level 2, Term I</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "4") echo "selected" ?> value="4">Level 2, Term II</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "5") echo "selected" ?> value="5">Level 3, Term I</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "6") echo "selected" ?> value="6">Level 3, Term II</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "7") echo "selected" ?> value="7">Level 4, Term I</option>
-                                    <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "8") echo "selected" ?> value="8">Level 4, Term II</option>
-                                </select>
+                                    <select name="semester" id="semester">
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "") echo "selected" ?>  value="">All Semester</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "1") echo "selected" ?> value="1">Level 1, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "2") echo "selected" ?> value="2">Level 1, Term II</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "3") echo "selected" ?> value="3">Level 2, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "4") echo "selected" ?> value="4">Level 2, Term II</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "5") echo "selected" ?> value="5">Level 3, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "6") echo "selected" ?> value="6">Level 3, Term II</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "7") echo "selected" ?> value="7">Level 4, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "8") echo "selected" ?> value="8">Level 4, Term II</option>
+                                    </select>
 
-                                <input type="text" style="min-width: 120px; width: 20%" name="search" placeholder="Search For..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
+                                    <input type="text" style="min-width: 120px; width: 20%" name="search" placeholder="Search For..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
 
-                                <button type='submit' class='btn btn-primary'>Search</button><br>
-                                <div id="invalid-dept" class="invalid-feedback">
-                                    * Please enter Search Text.
-                                </div>
-                            </form>
+                                    <button type='submit' class='btn btn-primary'>Search</button><br>
+                                    <div id="invalid-dept" class="invalid-feedback">
+                                        * Please enter Search Text.
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
+
+                    <div class="row">
+                        <?php if(isset($_GET['search'])) echo "<p>Showing search result for: <strong>" . $_GET['search'] . "</strong></p>"; ?>
+                    </div>
                 </div>
-
-                </p>
-
 
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <!--                                <th width='15px'>#</th>-->
                         <th>Code</th>
-                        <th>Name</th>
+                        <th>Title</th>
                         <th>Credit</th>
+                        <th>Department</th>
+                        <th>Semester</th>
                         <th>Teacher</th>
                         <th>Options</th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php
-                    $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username ORDER BY department.description, department.name";
-                    if($result = mysqli_query($db_conn, $sql)){
-                        while ($row = mysqli_fetch_assoc($result)){
-                            $head = $row['head'] == ""?"<button type='button' class='btn btn-sm btn-primary' onclick='assignDept(". $row['id'] . ")'>Assign</button>":$row['head'];
-    //                                        <td style='text-align: center; vertical-align: middle'><input onclick='toggleSelect(this)' type='checkbox'></td>
-                            echo "<tr>
-                                            <td>" . $row['name'] . "</td>
-                                            <td>" . $row['description'] . "</td>
-                                            <td>" . $row['description'] . "</td>
-                                            <td>" . $head . "</td>
+                    if(isset($_GET['search'])){
+                        $search = $_GET['search'];
+                        $dept = isset($_GET['dept'])?$_GET['dept']:"";
+                        $semester_p = isset($_GET['semester'])?$_GET['semester']:"";
+
+                        $semester_search = $semester_p == ""?"":"AND (course.semester = '" .$semester_p. "')";
+                        $dept_search = $dept == ""?"":"AND (course.department = " .$dept. ")";
+
+                        $sql = "SELECT course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
+                            FROM course
+                            LEFT JOIN teacher ON course.teacher = teacher.username
+                            LEFT JOIN department ON department.id = teacher.department
+                            WHERE (course.code LIKE '%$search%'
+                            OR course.title LIKE '%$search%'
+                            OR teacher.name LIKE '%$search%')
+                            " . $dept_search . $semester_search;
+
+                        if($result = mysqli_query($db_conn, $sql)){
+                            if(mysqli_num_rows($result)){
+                                while ($row = mysqli_fetch_assoc($result)){
+                                    echo "<tr>
+                                            <td>" . $row['code'] . "</td>
+                                            <td>" . $row['title'] . "</td>
+                                            <td>" . $row['credit'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
+                                            <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $row['teacher_name'] . "</td>
                                             
-                                            <td> <a href='?p=edit_dept&id=". $row['id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
-                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteDept(" . $row['id'] . ", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
+                                            <td> <a href='?p=edit_student&id=". $row['code'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['code'] . "\", \"" . $row['title'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
-//                            <td> <button type='button' class='btn btn-success btn-sm' onclick='editDept(" . $row['id'] . ", \"" . $row['name'] . "\", \"" . $row['description'] . "\", \"" . $row['username'] . "\", \"" . $row['head'] . "\")'>Edit</button>
+                                }
+                            } else{
+                                echo "<tr><td colspan='7'><center>No Students Found<center></td></tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
+                        }
+                    } else {
+                        $sql = "SELECT course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
+                            FROM course
+                            LEFT JOIN teacher ON course.teacher = teacher.username
+                            LEFT JOIN department ON department.id = teacher.department";
+                        if($result = mysqli_query($db_conn, $sql)){
+                            if(mysqli_num_rows($result)){
+                                while ($row = mysqli_fetch_assoc($result)){
+                                    echo "<tr>
+                                            <td>" . $row['code'] . "</td>
+                                            <td>" . $row['title'] . "</td>
+                                            <td>" . $row['credit'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
+                                            <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $row['teacher_name'] . "</td>
+                                            
+                                            <td> <a href='?p=edit_course&id=". $row['code'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['code'] . "\", \"" . $row['title'] . "\")'>Delete</button>" . "</td>
+                                        </tr>";
+                                }
+                            }else {
+                                echo "<tr><td colspan='7'><center>No Students<center></td></tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) . "<center></td></tr>";
                         }
                     }
                     ?>
@@ -211,7 +257,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </tbody>
                 </table>
             </div>
-            <!--                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
         </div>
 
 
@@ -220,69 +265,23 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         <?php include "includes/footer.php" ?>
     </div>
 
-    <!-- Delete Department Modal -->
-    <div id="deleteDeptModel" class="modal">
+    <!-- Delete Course Modal -->
+    <div id="deleteCourseModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close" onclick="deleteDeptModalDisplay('none')">&times;</span>
-                <h2>Delete Department</h2>
+                <span class="close" onclick="modalDisplay('deleteCourseModal', 'none')">&times;</span>
+                <h2>Delete Course</h2>
             </div>
             <div class="modal-body">
-                <p>Select "Delete" below if you want to delete <strong id="dept_name_text">the selected</strong> department.</p>
+                <p>Select "Delete" below if you want to delete <strong id="name_text">the selected</strong> course.</p>
             </div>
             <div class="modal-footer">
-                <form name="DeleteDept" action="action/delete_dept.php" method="post">
-                    <input name="dept_id" type="hidden">
-                    <input name="dept_name" type="hidden">
+                <form name="DeleteCourse" action="action/delete_course.php" method="post">
+                    <input name="course_code" type="hidden">
+                    <input name="course_title" type="hidden">
                     <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
-                <button class="btn btn-secondary" type="button" onclick="deleteDeptModalDisplay('none')">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Assign Department Head Modal -->
-    <div id="assignDeptHeadModel" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" onclick="modalDisplay('assignDeptHeadModel', 'none')">&times;</span>
-                <h2>Assign Department Head</h2>
-            </div>
-            <div class="modal-body">
-                <p>
-                    <form name="AssignDepartmentHead" action="action/assign_dept_head.php" method="post" onsubmit="return validateDeptHeadForm()">
-                        <label for="departmentHead">Department Head</label>
-                        <br><br>
-                        <select name="deptHead" id="departmentHead">
-                            <option value="" selected>Choose...</option>
-                            <?php
-                            $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
-                            //                            $sql = "SELECT username, name FROM teacher";
-
-                            if($result = mysqli_query($db_conn, $sql)){
-                                if(mysqli_num_rows($result) > 0){
-                                    while($row = mysqli_fetch_assoc($result)){
-                                        echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
-                                    }
-                                } else {
-
-                                }
-                            } else {
-                                die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
-                            }
-                            ?>
-                        </select>
-                        <div id="invalid-dept-head" class="invalid-feedback">
-                            * Please select a department head.
-                        </div>
-                        <br><br>
-                        <input name="deptID" type="hidden">
-                        <button type="submit" class="btn btn-primary">Assign</button>
-                    </form>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" onclick="modalDisplay('assignDeptHeadModel', 'none')">Cancel</button>
+                <button class="btn btn-secondary" type="button" onclick="modalDisplay('deleteCourseModal', 'none')">Cancel</button>
             </div>
         </div>
     </div>
