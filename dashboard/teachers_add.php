@@ -106,12 +106,237 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <form class="form-group" name="AddTeacher" action="action/add_teacher.php" method="post" onsubmit="return validateTeacherForm()">
                     <div class="row">
                         <div class="col-25">
+                            <label for="teacherUsername">Teacher Username</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherUsername" id="teacherUsername" placeholder="Enter Teacher Username">
+                            <div class="invalid-feedback">
+                                * Please enter teacher username.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
                             <label for="teacherName">Teacher Name</label>
 
                         </div>
                         <div class="col-75">
                             <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name">
-                            <div id="invalid-teacher" class="invalid-feedback">
+                            <div class="invalid-feedback">
+                                * Please enter teacher name.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherDesignation">Designation</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="teacherDesignation" id="teacherDesignation">
+                                <option value="" selected>Choose...</option>
+                                <option value="Professor">Professor</option>
+                                <option value="Associate Professor">Associate Professor</option>
+                                <option value="Assistant Professor">Assistant Professor</option>
+                                <option value="Lecturer">Lecturer</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please enter teacher Designation.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherDepartment">Department</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="teacherDepartment" id="teacherDepartment">
+                                <option value="">Choose...</option>
+                                <?php
+                                if($dept_row['username'] == ""){
+                                    echo '<option value="-1" selected>Not Assigned</option>';
+                                } else {
+                                    echo '<option value="-1">Not Assigned</option>';
+                                    echo '<option value="'. $dept_row['username'] . '" selected>'.$dept_row['head'] . '</option>';
+                                }
+                                ?>
+
+                                <?php
+                                $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
+                                //                            $sql = "SELECT username, name FROM teacher";
+
+                                if($result = mysqli_query($db_conn, $sql)){
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_assoc($result)){
+                                            echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
+                                        }
+                                    } else {
+
+                                    }
+                                } else {
+                                    die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                                }
+                                ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please enter Department.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherGender">Gender</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="teacherGender" id="teacherGender">
+                                <option value="" selected>Choose...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please enter Gender.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherBirthdate">Birthdate</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherBirthdate" id="teacherBirthdate" placeholder="DD-MM-YYYY">
+                            <div class="invalid-feedback">
+                                * Please enter Birthdate.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherEmail">Email</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherEmail" id="teacherEmail" placeholder="Enter Email Address">
+                            <div class="invalid-feedback">
+                                * Please enter email address.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherPhone">Phone</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherPhone" id="teacherPhone" placeholder="Enter Phone Number">
+                            <div class="invalid-feedback">
+                                * Please enter phone number.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherAddress">Address</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherAddress" id="teacherAddress" placeholder="Enter Address">
+                            <div class="invalid-feedback">
+                                * Please enter address.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherDistrict">District</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="teacherDistrict" id="teacherDistrict">
+                                <option value="" selected>Choose...</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barguna">Barguna</option>
+
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please enter District.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherName">Teacher Name</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name">
+                            <div class="invalid-feedback">
                                 * Please enter teacher name.
                             </div>
                         </div>
