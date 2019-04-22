@@ -102,7 +102,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <i class="fas fa-edit"></i> Add Course</div>
             <div class="card-body">
                 <p>
-                <form class="form-group" name="AddCourse" action="action/add_student.php" method="post" onsubmit="return validateStudentForm()">
+                <form class="form-group" name="AddCourse" action="action/add_course.php" method="post" onsubmit="return validateCourseForm()">
                     <div class="row">
                         <div class="col-25">
                             <label for="courseCode">Course Code</label>
@@ -121,163 +121,33 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="studentName" id="studentName" placeholder="Enter Student Name">
+                            <input type="text" name="courseTitle" id="courseTitle" placeholder="Enter Course Title">
                             <div class="invalid-feedback">
-                                * Please enter student name.
+                                * Please enter course title.
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentEmail">Email</label>
+                            <label for="courseCredit">Credit</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="studentEmail" id="studentEmail" placeholder="Enter Email Address">
+                            <input type="text" name="courseCredit" id="courseCredit" placeholder="Enter Course Credit">
                             <div class="invalid-feedback">
-                                * Please enter email address.
+                                * Please enter course credit.
                             </div>
                         </div>
                     </div>
+
+
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentPhone">Phone</label>
+                            <label for="courseDepartment">Department</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="studentPhone" id="studentPhone" placeholder="Enter Phone Number">
-                            <div class="invalid-feedback">
-                                * Please enter a phone number.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="studentGender">Gender</label>
-
-                        </div>
-                        <div class="col-75">
-                            <select name="studentGender" id="studentGender">
-                                <option value="" selected>Choose...</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                * Please select Gender.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="studentBirthdate">Birthdate</label>
-
-                        </div>
-                        <div class="col-75">
-                            <input type="date" name="studentBirthdate" id="studentBirthdate" placeholder="">
-                            <div class="invalid-feedback">
-                                * Please enter Birthdate.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="studentAddress">Address</label>
-
-                        </div>
-                        <div class="col-75">
-                            <input type="text" name="studentAddress" id="studentAddress" placeholder="Enter Address">
-                            <div class="invalid-feedback">
-                                * Please enter an address.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="studentDistrict">District</label>
-
-                        </div>
-                        <div class="col-75">
-                            <select name="studentDistrict" id="studentDistrict">
-                                <option value="" selected>Choose...</option>
-                                <option value="Bagerhat">Bagerhat</option>
-                                <option value="Bandarban">Bandarban</option>
-                                <option value="Barguna">Barguna</option>
-                                <option value="Barisal">Barisal</option>
-                                <option value="Bhola">Bhola</option>
-                                <option value="Bogra">Bogra</option>
-                                <option value="Brahmanbaria">Brahmanbaria</option>
-                                <option value="Chandpur">Chandpur</option>
-                                <option value="Chittagong">Chittagong</option>
-                                <option value="Chuadanga">Chuadanga</option>
-                                <option value="Comilla">Comilla</option>
-                                <option value="Cox's Bazar">Cox's Bazar</option>
-                                <option value="Dhaka">Dhaka</option>
-                                <option value="Dinajpur">Dinajpur</option>
-                                <option value="Faridpur">Faridpur</option>
-                                <option value="Feni">Feni</option>
-                                <option value="Gaibandha">Gaibandha</option>
-                                <option value="Gazipur">Gazipur</option>
-                                <option value="Gopalganj">Gopalganj</option>
-                                <option value="Habiganj">Habiganj</option>
-                                <option value="Jaipurhat">Jaipurhat</option>
-                                <option value="Jamalpur">Jamalpur</option>
-                                <option value="Jessore">Jessore</option>
-                                <option value="Jhalakati">Jhalakati</option>
-                                <option value="Jhenaidah">Jhenaidah</option>
-                                <option value="Khagrachari">Khagrachari</option>
-                                <option value="Khulna">Khulna</option>
-                                <option value="Kishoreganj">Kishoreganj</option>
-                                <option value="Kurigram">Kurigram</option>
-                                <option value="Kushtia">Kushtia</option>
-                                <option value="Lakshmipur">Lakshmipur</option>
-                                <option value="Lalmonirhat">Lalmonirhat</option>
-                                <option value="Madaripur">Madaripur</option>
-                                <option value="Magura">Magura</option>
-                                <option value="Manikganj">Manikganj</option>
-                                <option value="Meherpur">Meherpur</option>
-                                <option value="Moulvibazar">Moulvibazar</option>
-                                <option value="Munshiganj">Munshiganj</option>
-                                <option value="Mymensingh">Mymensingh</option>
-                                <option value="Narail">Narail</option>
-                                <option value="Naogaon">Naogaon</option>
-                                <option value="Narayanganj">Narayanganj</option>
-                                <option value="Narsingdi">Narsingdi</option>
-                                <option value="Natore">Natore</option>
-                                <option value="Nawabganj">Nawabganj</option>
-                                <option value="Netrakona">Netrakona</option>
-                                <option value="Nilphamari">Nilphamari</option>
-                                <option value="Noakhali">Noakhali</option>
-                                <option value="Pabna">Pabna</option>
-                                <option value="Panchagarh">Panchagarh</option>
-                                <option value="Parbattya Chattagram">Parbattya Chattagram</option>
-                                <option value="Patuakhali">Patuakhali</option>
-                                <option value="Pirojpur">Pirojpur</option>
-                                <option value="Rangpur">Rangpur</option>
-                                <option value="Rajshahi">Rajshahi</option>
-                                <option value="Rajbari">Rajbari</option>
-                                <option value="Satkhira">Satkhira</option>
-                                <option value="Shariatpur">Shariatpur</option>
-                                <option value="Sherpur">Sherpur</option>
-                                <option value="Sirajganj">Sirajganj</option>
-                                <option value="Sunamganj">Sunamganj</option>
-                                <option value="Sylhet">Sylhet</option>
-                                <option value="Tangail">Tangail</option>
-                                <option value="Thakurgaon">Thakurgaon</option>
-
-                            </select>
-                            <div class="invalid-feedback">
-                                * Please select a district.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="studentDepartment">Department</label>
-
-                        </div>
-                        <div class="col-75">
-                            <select name="studentDepartment" id="studentDepartment">
+                            <select name="courseDepartment" id="courseDepartment">
                                 <option value="" selected>Choose...</option>
 
                                 <?php
@@ -304,11 +174,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentSemester">Semester</label>
+                            <label for="courseSemester">Semester</label>
 
                         </div>
                         <div class="col-75">
-                            <select name="studentSemester" id="studentSemester">
+                            <select name="courseSemester" id="courseSemester">
                                 <option value="" selected>Choose...</option>
                                 <option value="1">Level 1, Term I</option>
                                 <option value="2">Level 1, Term II</option>
@@ -326,13 +196,19 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentPhoto">Photo</label>
+                            <label for="courseTeacher">Teacher</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="studentPhoto" id="studentPhoto" placeholder="Browse..">
+                            <select name="courseTeacher" id="courseTeacher">
+                                <option value="" selected>Choose...</option>
+                                <option value="1">Mr 1</option>
+                                <option value="2">Mr 2</option>
+                                <option value="3">Ms 1</option>
+                                <option value="4">Ms 2</option>
+                            </select>
                             <div class="invalid-feedback">
-                                * Please choose a photo.
+                                * Please select teacher.
                             </div>
                         </div>
                     </div>
