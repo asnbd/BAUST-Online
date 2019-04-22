@@ -112,7 +112,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         <div class="col-75">
                             <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name">
                             <div id="invalid-teacher" class="invalid-feedback">
-                                * Please enter department name.
+                                * Please enter teacher name.
                             </div>
                         </div>
                     </div>
