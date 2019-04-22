@@ -97,7 +97,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
         ?>
 
-        <!-- Department Edit -->
+        <!-- Teacher Add -->
         <div class="card">
             <div class="card-header">
                 <i class="fas fa-edit"></i> Add Teacher</div>

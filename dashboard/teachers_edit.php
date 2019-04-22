@@ -13,7 +13,7 @@ require_once "../includes/db.php";
 include "../includes/session.php";
 
 $message_count = NAN;
-$dept_row = NAN;
+$teacher_row = NAN;
 
 if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     $sql = "SELECT COUNT(*) AS message FROM message WHERE msg_to = '$login_user' AND unread = 1";
@@ -28,12 +28,22 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     mysqli_free_result($result);
 
     if(isset($_GET['id'])){
-        $dept_id = $_GET['id'];
-        $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username WHERE id = '$dept_id'";
+        $user_id = $_GET['id'];
+        $sql = "SELECT teacher.username, teacher.name,
+                teacher.designation, teacher.department,
+                department.name AS dept_name,
+                teacher.gender, teacher.birthdate,
+                teacher.email,teacher.phone,
+                teacher.address, teacher.district,
+                teacher.photo FROM teacher
+                LEFT JOIN department ON teacher.department = department.id
+                WHERE username = '$user_id'";
         //mysqli_real_escape_string($sql);
 
         if($result = mysqli_query($db_conn, $sql)){
-            $dept_row = mysqli_fetch_assoc($result);
+            $teacher_row = mysqli_fetch_assoc($result);
+        } else {
+            echo "Database Error: " . mysqli_error($db_conn);
         }
     } else {
         $_SESSION['message'] = ["error", "Invalid Department ID!"];
@@ -110,57 +120,77 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
         ?>
 
-        <!-- Department Edit -->
+        <!-- Teacher Add -->
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-edit"></i> Edit Department</div>
+                <i class="fas fa-edit"></i> Edit Teacher</div>
             <div class="card-body">
                 <p>
-                <form class="form-group" name="EditDepartment" action="action/update_dept.php" method="post" onsubmit="return validateEditDeptForm()">
+                <form class="form-group" name="AddTeacher" action="action/edit_teacher.php" method="post" onsubmit="return validateTeacherForm()">
                     <div class="row">
                         <div class="col-25">
-                            <label for="departmentName">Department Name</label>
+                            <label for="teacherUsername">Username</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="deptName" id="departmentName" placeholder="Enter Department Name" value="<?php echo $dept_row['name'];?>">
-                            <div id="invalid-dept" class="invalid-feedback">
-                                * Please enter department name.
+                            <input type="text" disabled name="teacherUsername" id="teacherUsername" placeholder="" value="<?php echo $teacher_row['username'] ?>">
+                            <div class="invalid-feedback">
+                                * Please enter username.
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="departmentDesc">Department Description</label>
+                            <label for="teacherName">Name</label>
+
                         </div>
                         <div class="col-75">
-                            <textarea name="deptDesc" id="departmentDesc" placeholder="Enter Department Description" rows="3"><?php echo $dept_row['description'];?></textarea>
+                            <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name" value="<?php echo $teacher_row['name'] ?>">
+                            <div class="invalid-feedback">
+                                * Please enter name.
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="departmentHead">Department Head</label>
+                            <label for="teacherDesignation">Designation</label>
+
                         </div>
                         <div class="col-75">
-                            <select name="deptHead" id="departmentHead">
+                            <select name="teacherDesignation" id="teacherDesignation">
+                                <option value="" selected>Choose...</option>
+                                <option <?php if ($teacher_row['designation'] == "Professor") echo "selected"?> value="Professor">Professor</option>
+                                <option <?php if ($teacher_row['designation'] == "Associate Professor") echo "selected"?> value="Associate Professor">Associate Professor</option>
+                                <option <?php if ($teacher_row['designation'] == "Assistant Professor") echo "selected"?> value="Assistant Professor">Assistant Professor</option>
+                                <option <?php if ($teacher_row['designation'] == "Lecturer") echo "selected"?> value="Lecturer">Lecturer</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please select a designation.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherDepartment">Department</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="teacherDepartment" id="teacherDepartment">
                                 <option value="">Choose...</option>
-                                <?php
-                                    if($dept_row['username'] == ""){
-                                        echo '<option value="-1" selected>Not Assigned</option>';
-                                    } else {
-                                        echo '<option value="-1">Not Assigned</option>';
-                                        echo '<option value="'. $dept_row['username'] . '" selected>'.$dept_row['head'] . '</option>';
-                                    }
-                                ?>
 
                                 <?php
-                                $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
+                                $sql = "SELECT id, name FROM department";
                                 //                            $sql = "SELECT username, name FROM teacher";
 
                                 if($result = mysqli_query($db_conn, $sql)){
                                     if(mysqli_num_rows($result) > 0){
                                         while($row = mysqli_fetch_assoc($result)){
-                                            echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
+                                            if($row['id'] == $teacher_row['department']){
+                                                echo "<option value='" . $row['id'] . "' selected>" . $row['name'] . "</option>";
+                                            } else {
+                                                echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                            }
+
                                         }
                                     } else {
 
@@ -170,11 +200,167 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                 }
                                 ?>
                             </select>
-                            <div id="invalid-dept-head" class="invalid-feedback">
-                                * Please select a department head.
+                            <div class="invalid-feedback">
+                                * Please select a department.
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherGender">Gender</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="teacherGender" id="teacherGender">
+                                <option value="" selected>Choose...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please select a gender.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherBirthdate">Birthdate</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="date" name="teacherBirthdate" id="teacherBirthdate" placeholder="DD-MM-YYYY">
+                            <div class="invalid-feedback">
+                                * Please enter birthdate.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherEmail">Email</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherEmail" id="teacherEmail" placeholder="Enter Email Address">
+                            <div class="invalid-feedback">
+                                * Please enter email address.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherPhone">Phone</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherPhone" id="teacherPhone" placeholder="Enter Phone Number">
+                            <div class="invalid-feedback">
+                                * Please enter phone number.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherAddress">Address</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherAddress" id="teacherAddress" placeholder="Enter Address">
+                            <div class="invalid-feedback">
+                                * Please enter address.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherDistrict">District</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="teacherDistrict" id="teacherDistrict">
+                                <option value="" selected>Choose...</option>
+                                <option value="Bagerhat">Bagerhat</option>
+                                <option value="Bandarban">Bandarban</option>
+                                <option value="Barguna">Barguna</option>
+                                <option value="Barisal">Barisal</option>
+                                <option value="Bhola">Bhola</option>
+                                <option value="Bogra">Bogra</option>
+                                <option value="Brahmanbaria">Brahmanbaria</option>
+                                <option value="Chandpur">Chandpur</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Chuadanga">Chuadanga</option>
+                                <option value="Comilla">Comilla</option>
+                                <option value="Cox's Bazar">Cox's Bazar</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Dinajpur">Dinajpur</option>
+                                <option value="Faridpur">Faridpur</option>
+                                <option value="Feni">Feni</option>
+                                <option value="Gaibandha">Gaibandha</option>
+                                <option value="Gazipur">Gazipur</option>
+                                <option value="Gopalganj">Gopalganj</option>
+                                <option value="Habiganj">Habiganj</option>
+                                <option value="Jaipurhat">Jaipurhat</option>
+                                <option value="Jamalpur">Jamalpur</option>
+                                <option value="Jessore">Jessore</option>
+                                <option value="Jhalakati">Jhalakati</option>
+                                <option value="Jhenaidah">Jhenaidah</option>
+                                <option value="Khagrachari">Khagrachari</option>
+                                <option value="Khulna">Khulna</option>
+                                <option value="Kishoreganj">Kishoreganj</option>
+                                <option value="Kurigram">Kurigram</option>
+                                <option value="Kushtia">Kushtia</option>
+                                <option value="Lakshmipur">Lakshmipur</option>
+                                <option value="Lalmonirhat">Lalmonirhat</option>
+                                <option value="Madaripur">Madaripur</option>
+                                <option value="Magura">Magura</option>
+                                <option value="Manikganj">Manikganj</option>
+                                <option value="Meherpur">Meherpur</option>
+                                <option value="Moulvibazar">Moulvibazar</option>
+                                <option value="Munshiganj">Munshiganj</option>
+                                <option value="Mymensingh">Mymensingh</option>
+                                <option value="Narail">Narail</option>
+                                <option value="Naogaon">Naogaon</option>
+                                <option value="Narayanganj">Narayanganj</option>
+                                <option value="Narsingdi">Narsingdi</option>
+                                <option value="Natore">Natore</option>
+                                <option value="Nawabganj">Nawabganj</option>
+                                <option value="Netrakona">Netrakona</option>
+                                <option value="Nilphamari">Nilphamari</option>
+                                <option value="Noakhali">Noakhali</option>
+                                <option value="Pabna">Pabna</option>
+                                <option value="Panchagarh">Panchagarh</option>
+                                <option value="Parbattya Chattagram">Parbattya Chattagram</option>
+                                <option value="Patuakhali">Patuakhali</option>
+                                <option value="Pirojpur">Pirojpur</option>
+                                <option value="Rangpur">Rangpur</option>
+                                <option value="Rajshahi">Rajshahi</option>
+                                <option value="Rajbari">Rajbari</option>
+                                <option value="Satkhira">Satkhira</option>
+                                <option value="Shariatpur">Shariatpur</option>
+                                <option value="Sherpur">Sherpur</option>
+                                <option value="Sirajganj">Sirajganj</option>
+                                <option value="Sunamganj">Sunamganj</option>
+                                <option value="Sylhet">Sylhet</option>
+                                <option value="Tangail">Tangail</option>
+                                <option value="Thakurgaon">Thakurgaon</option>
+
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please select a district.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="teacherPhoto">Photo</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="teacherPhoto" id="teacherPhoto" placeholder="Browse..">
+                            <div class="invalid-feedback">
+                                * Please choose a photo.
+                            </div>
+                        </div>
+                    </div>
+
                     <input name="deptID" type="hidden" value="<?php echo $dept_row['id'] ?>">
                     <div class="row">
                         <button type='submit' class='btn btn-primary' style="float: right; margin-top: 15px">Save</button><br>
