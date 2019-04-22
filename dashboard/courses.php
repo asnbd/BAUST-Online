@@ -211,22 +211,22 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                             <td>" . $row['code'] . "</td>
                                             <td>" . $row['title'] . "</td>
                                             <td>" . $row['credit'] . "</td>
-                                            <td>" . $semester[$row['semester']] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
                                             <td>" . $row['teacher_name'] . "</td>
                                             
-                                            <td> <a href='?p=edit_student&id=". $row['code'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <td> <a href='?p=edit_course&id=". $row['code'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
                                             <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['code'] . "\", \"" . $row['title'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                                 }
                             } else{
-                                echo "<tr><td colspan='7'><center>No Students Found<center></td></tr>";
+                                echo "<tr><td colspan='7'><center>No Courses Found<center></td></tr>";
                             }
                         } else {
                             echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
                         }
                     } else {
-                        $sql = "SELECT course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
+                        $sql = "SELECT course.id, course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
                             FROM course
                             LEFT JOIN teacher ON course.teacher = teacher.username
                             LEFT JOIN department ON department.id = teacher.department";
@@ -237,16 +237,16 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                             <td>" . $row['code'] . "</td>
                                             <td>" . $row['title'] . "</td>
                                             <td>" . $row['credit'] . "</td>
-                                            <td>" . $semester[$row['semester']] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
                                             <td>" . $row['teacher_name'] . "</td>
                                             
-                                            <td> <a href='?p=edit_course&id=". $row['code'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
-                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['code'] . "\", \"" . $row['title'] . "\")'>Delete</button>" . "</td>
+                                            <td> <a href='?p=edit_course&id=". $row['id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['id'] . "\", \"" . $row['title'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                                 }
                             }else {
-                                echo "<tr><td colspan='7'><center>No Students<center></td></tr>";
+                                echo "<tr><td colspan='7'><center>No Courses<center></td></tr>";
                             }
                         } else {
                             echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) . "<center></td></tr>";
