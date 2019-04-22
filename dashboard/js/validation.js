@@ -298,118 +298,69 @@ function validateStudentForm() {
 
 // Validate Course Form in Students Page
 function validateCourseForm() {
-    var studentID = document.forms["AddStudent"]["studentID"];
-    var studentName = document.forms["AddStudent"]["studentName"];
-    var studentEmail = document.forms["AddStudent"]["studentEmail"];
-    var studentAddress = document.forms["AddStudent"]["studentAddress"];
-    var studentDistrict = document.forms["AddStudent"]["studentDistrict"];
-    var studentPhone = document.forms["AddStudent"]["studentPhone"];
-    var studentGender = document.forms["AddStudent"]["studentGender"];
-    var studentBirthdate = document.forms["AddStudent"]["studentBirthdate"];
-    var studentPhoto = document.forms["AddStudent"]["studentPhoto"];
-    var studentSemester = document.forms["AddStudent"]["studentSemester"];
-    var studentDepartment = document.forms["AddStudent"]["studentDepartment"];
+    var courseCode = document.forms["AddCourse"]["courseCode"];
+    var courseTitle = document.forms["AddCourse"]["courseTitle"];
+    var courseCredit = document.forms["AddCourse"]["courseCredit"];
+    var courseDepartment = document.forms["AddCourse"]["courseDepartment"];
+    var courseSemester = document.forms["AddCourse"]["courseSemester"];
+    var courseTeacher = document.forms["AddCourse"]["courseTeacher"];
 
-    studentID.classList.remove("invalid-input");
-    studentName.classList.remove("invalid-input");
-    studentEmail.classList.remove("invalid-input");
-    studentAddress.classList.remove("invalid-input");
-    studentDistrict.classList.remove("invalid-input");
-    studentPhone.classList.remove("invalid-input");
-    studentGender.classList.remove("invalid-input");
-    studentBirthdate.classList.remove("invalid-input");
-    studentPhoto.classList.remove("invalid-input");
-    studentSemester.classList.remove("invalid-input");
-    studentDepartment.classList.remove("invalid-input");
+    courseCode.classList.remove("invalid-input");
+    courseTitle.classList.remove("invalid-input");
+    courseCredit.classList.remove("invalid-input");
+    courseDepartment.classList.remove("invalid-input");
+    courseSemester.classList.remove("invalid-input");
+    courseTeacher.classList.remove("invalid-input");
 
-    studentID.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentName.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentEmail.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentAddress.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentDistrict.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentPhone.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentGender.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentBirthdate.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentPhoto.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentSemester.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
-    studentDepartment.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
+    courseCode.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
+    courseTitle.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
+    courseCredit.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
+    courseDepartment.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
+    courseSemester.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
+    courseTeacher.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "none";
 
-    if(studentID.value == ""){
-        studentID.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentID.classList.add("invalid-input");
-        studentID.focus();
+    if(courseCode.value == ""){
+        courseCode.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        courseCode.classList.add("invalid-input");
+        courseCode.focus();
         return false;
     }
 
-    if(studentName.value == ""){
-        studentName.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentName.classList.add("invalid-input");
-        studentName.focus();
+    if(courseTitle.value == ""){
+        courseTitle.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        courseTitle.classList.add("invalid-input");
+        courseTitle.focus();
         return false;
     }
 
-    if(studentEmail.value == ""){
-        studentEmail.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentEmail.classList.add("invalid-input");
-        studentEmail.focus();
+    if(courseCredit.value == ""){
+        courseCredit.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        courseCredit.classList.add("invalid-input");
+        courseCredit.focus();
         return false;
     }
 
-    if(studentPhone.value == ""){
-        studentPhone.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentPhone.classList.add("invalid-input");
-        studentPhone.focus();
+    if(courseDepartment.value == ""){
+        courseDepartment.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        courseDepartment.classList.add("invalid-input");
+        courseDepartment.focus();
         return false;
     }
 
-    if(studentGender.value == ""){
-        studentGender.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentGender.classList.add("invalid-input");
-        studentGender.focus();
+    if(courseSemester.value == ""){
+        courseSemester.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        courseSemester.classList.add("invalid-input");
+        courseSemester.focus();
         return false;
     }
 
-    if(studentBirthdate.value == ""){
-        studentBirthdate.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentBirthdate.classList.add("invalid-input");
-        studentBirthdate.focus();
+    if(courseTeacher.value == ""){
+        courseTeacher.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
+        courseTeacher.classList.add("invalid-input");
+        courseTeacher.focus();
         return false;
     }
 
-    if(studentAddress.value == ""){
-        studentAddress.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentAddress.classList.add("invalid-input");
-        studentAddress.focus();
-        return false;
-    }
-
-    if(studentDistrict.value == ""){
-        studentDistrict.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentDistrict.classList.add("invalid-input");
-        studentDistrict.focus();
-        return false;
-    }
-
-    if(studentDepartment.value == ""){
-        studentDepartment.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentDepartment.classList.add("invalid-input");
-        studentDepartment.focus();
-        return false;
-    }
-
-    if(studentSemester.value == ""){
-        studentSemester.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentSemester.classList.add("invalid-input");
-        studentSemester.focus();
-        return false;
-    }
-
-    if(studentPhoto.value == ""){
-        studentPhoto.parentNode.getElementsByClassName("invalid-feedback")[0].style.display = "block";
-        studentPhoto.classList.add("invalid-input");
-        studentPhoto.focus();
-        return false;
-    }
 
     return true;
 }
