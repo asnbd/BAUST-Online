@@ -151,9 +151,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['description'] . "</td>
                                             <td>" . $head . "</td>
-                                            <td> <button type='button' class='btn btn-success btn-sm' onclick='editDept(" . $row['id'] . ", \"" . $row['name'] . "\", \"" . $row['description'] . "\", \"" . $row['username'] . "\", \"" . $row['head'] . "\")'>Edit</button>
+                                            
+                                            <td> <a href='?p=edit_dept&id=". $row['id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
                                             <button type='button' class='btn btn-danger btn-sm' onclick='deleteDept(" . $row['id'] . ", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
+//                            <td> <button type='button' class='btn btn-success btn-sm' onclick='editDept(" . $row['id'] . ", \"" . $row['name'] . "\", \"" . $row['description'] . "\", \"" . $row['username'] . "\", \"" . $row['head'] . "\")'>Edit</button>
                         }
                     }
                     ?>
@@ -238,6 +240,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     </div>
 
     <script src="js/scripts.js" type="text/javascript"></script>
+    <script src="js/validation.js" type="text/javascript"></script>
 
 </body>
 

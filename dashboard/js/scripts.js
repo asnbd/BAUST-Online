@@ -9,23 +9,6 @@ for (i = 0; i < close.length; i++) {
     }
 }
 
-// Validate Add Department Form in Departments Page
-function validateDeptForm() {
-    var dept_name = document.forms["AddDepartment"]["deptName"];
-
-    dept_name.classList.remove("invalid-input");
-    document.getElementById("invalid-dept").style.display = "none";
-
-    if(dept_name.value == ""){
-        document.getElementById("invalid-dept").style.display = "block";
-        dept_name.classList.add("invalid-input");
-        dept_name.focus();
-        return false;
-    }
-
-    return true;
-}
-
 function modalDisplay(id, disp) {
     document.getElementById(id).style.display = disp;
 }
@@ -33,21 +16,6 @@ function modalDisplay(id, disp) {
 function assignDept(id) {
     modalDisplay('assignDeptHeadModel', 'block')
     document.forms["AssignDepartmentHead"]["deptID"].value = id;
-}
-
-// Validate Assign Department Head Form in Departments Page
-function validateDeptHeadForm() {
-    var dept_head = document.forms["AssignDepartmentHead"]["departmentHead"];
-
-    document.getElementById("invalid-dept-head").style.display = "none";
-
-    if(dept_head.value == ""){
-        document.getElementById("invalid-dept-head").style.display = "block";
-        dept_head.focus();
-        return false;
-    }
-
-    return true;
 }
 
 // Delete Modal

@@ -27,6 +27,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
 
         header("location: ../?p=departments");
+    } else {
+        $_SESSION['message'] = ["error", "Error Updating Department!" . mysqli_error($db_conn)];
+        header("location: ../?p=departments");
     }
 } else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>

@@ -435,6 +435,18 @@ input[type=text], select, textarea {
     resize: vertical;
 }
 
+select{
+    min-width: 240px;
+}
+
+.form-group input[type=text], .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
 input[type=text].invalid-input, select.invalid-input, textarea.invalid-input{
     border: 1px solid red; !important;
 }
@@ -459,9 +471,14 @@ label {
 .invalid-feedback {
     display: none;
     width: 100%;
-    margin-top: 0.25rem;
+    margin-top: 5px;
+    margin-bottom: 10px;
     font-size: 80%;
     color: #dc3545;
+}
+
+.f-right{
+    float: right;
 }
 
 /*Modal*/

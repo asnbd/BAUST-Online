@@ -13,6 +13,7 @@ require_once "../includes/db.php";
 include "../includes/session.php";
 
 $message_count = NAN;
+$dept_row = NAN;
 
 if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     $sql = "SELECT COUNT(*) AS message FROM message WHERE msg_to = '$login_user' AND unread = 1";
@@ -25,6 +26,19 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     }
 
     mysqli_free_result($result);
+
+    if(isset($_GET['id'])){
+        $dept_id = $_GET['id'];
+        $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username WHERE id = '$dept_id'";
+        //mysqli_real_escape_string($sql);
+
+        if($result = mysqli_query($db_conn, $sql)){
+            $dept_row = mysqli_fetch_assoc($result);
+        }
+    } else {
+        $_SESSION['message'] = ["error", "Invalid Department ID!"];
+        header("location: ?p=departments");
+    }
 } else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
@@ -102,55 +116,68 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <i class="fas fa-edit"></i> Edit Department</div>
             <div class="card-body">
                 <p>
-                    <form name="AddDepartment" action="?p=departments" method="post" onsubmit="return validateDeptForm()">
-                        <input type="text" style="min-width: 100px; width: 20%" name="deptName" placeholder="Enter Department Name">
-                        <input type="text" style="min-width: 100px; width: 50%" name="deptDesc" placeholder="Enter Department Desc">
-
-                        <button type='submit' class='btn btn-primary'>Add Department</button><br>
-                        <div id="invalid-dept" class="invalid-feedback">
-                            * Please enter department name.
-                        </div>
-                    </form>
-
-                <form action="/action_page.php">
+                <form class="form-group" name="EditDepartment" action="action/update_dept.php" method="post" onsubmit="return validateEditDeptForm()">
                     <div class="row">
                         <div class="col-25">
-                            <label for="fname">First Name</label>
+                            <label for="departmentName">Department Name</label>
+
                         </div>
                         <div class="col-75">
-                            <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                            <input type="text" name="deptName" id="departmentName" placeholder="Enter Department Name" value="<?php echo $dept_row['name'];?>">
+                            <div id="invalid-dept" class="invalid-feedback">
+                                * Please enter department name.
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="lname">Last Name</label>
+                            <label for="departmentDesc">Department Description</label>
                         </div>
                         <div class="col-75">
-                            <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+                            <textarea name="deptDesc" id="departmentDesc" placeholder="Enter Department Description" rows="3"><?php echo $dept_row['description'];?></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="country">Country</label>
+                            <label for="departmentHead">Department Head</label>
                         </div>
                         <div class="col-75">
-                            <select id="country" name="country">
-                                <option value="australia">Australia</option>
-                                <option value="canada">Canada</option>
-                                <option value="usa">USA</option>
+                            <select name="deptHead" id="departmentHead">
+                                <option value="">Choose...</option>
+                                <?php
+                                    if($dept_row['username'] == ""){
+                                        echo '<option value="-1" selected>Not Assigned</option>';
+                                    } else {
+                                        echo '<option value="-1">Not Assigned</option>';
+                                        echo '<option value="'. $dept_row['username'] . '" selected>'.$dept_row['head'] . '</option>';
+                                    }
+                                ?>
+
+                                <?php
+                                $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
+                                //                            $sql = "SELECT username, name FROM teacher";
+
+                                if($result = mysqli_query($db_conn, $sql)){
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_assoc($result)){
+                                            echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
+                                        }
+                                    } else {
+
+                                    }
+                                } else {
+                                    die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                                }
+                                ?>
                             </select>
+                            <div id="invalid-dept-head" class="invalid-feedback">
+                                * Please select a department head.
+                            </div>
                         </div>
                     </div>
+                    <input name="deptID" type="hidden" value="<?php echo $dept_row['id'] ?>">
                     <div class="row">
-                        <div class="col-25">
-                            <label for="subject">Subject</label>
-                        </div>
-                        <div class="col-75">
-                            <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <input type="submit" value="Submit">
+                        <button type='submit' class='btn btn-primary' style="float: right; margin-top: 15px">Save</button><br>
                     </div>
                 </form>
                 </p>
@@ -164,26 +191,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         <?php include "includes/footer.php" ?>
     </div>
 
-    <!-- Delete Department Modal -->
-    <div id="deleteDeptModel" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" onclick="deleteDeptModalDisplay('none')">&times;</span>
-                <h2>Delete Department</h2>
-            </div>
-            <div class="modal-body">
-                <p>Select "Delete" below if you want to delete <strong id="dept_name_text">the selected</strong> department.</p>
-            </div>
-            <div class="modal-footer">
-                <form name="DeleteDept" action="action/delete_dept.php" method="post">
-                    <input name="dept_id" type="hidden">
-                    <input name="dept_name" type="hidden">
-                    <button class="btn btn-danger" type="submit">Delete</button>
-                </form>
-                <button class="btn btn-secondary" type="button" onclick="deleteDeptModalDisplay('none')">Cancel</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Assign Department Head Modal -->
     <div id="assignDeptHeadModel" class="modal">
@@ -232,6 +239,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     </div>
 
     <script src="js/scripts.js" type="text/javascript"></script>
+    <script src="js/validation.js" type="text/javascript"></script>
 
 </body>
 
