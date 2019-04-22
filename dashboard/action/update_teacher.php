@@ -34,13 +34,13 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     birthdate = '$teacher_birthdate',
                     photo = '$teacher_photo',
                     designation = '$teacher_designation',
-                    department = '$teacher_department',
+                    department = '$teacher_department'
                     WHERE username = '$teacher_username'";
 
             if($result = mysqli_query($db_conn, $sql)){
                 $_SESSION['message'] = ["success", "Teacher Successfully Updated!"];
             } else {
-                $_SESSION['message'] = ["error", "Error Updating Teacher!" . mysqli_error($db_conn)];
+                $_SESSION['message'] = ["error", "Error Updating Teacher! DB Error: " . mysqli_error($db_conn)];
             }
         } else {
             $_SESSION['message'] = ["error", "Error Updating Teacher! <strong>Invalid Information!</strong>"];

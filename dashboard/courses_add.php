@@ -58,8 +58,8 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <div class="content">
         <ul class="breadcrumb">
             <li><a href="index.php">Dashboard</a></li>
-            <li><a href="?p=students">Students</a></li>
-            <li>Add Student</li>
+            <li><a href="?p=courses">Courses</a></li>
+            <li>Add Course</li>
         </ul>
 
         <?php
@@ -99,25 +99,25 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         <!-- Department Edit -->
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-edit"></i> Add Student</div>
+                <i class="fas fa-edit"></i> Add Course</div>
             <div class="card-body">
                 <p>
-                <form class="form-group" name="AddStudent" action="action/add_student.php" method="post" onsubmit="return validateStudentForm()">
+                <form class="form-group" name="AddCourse" action="action/add_student.php" method="post" onsubmit="return validateStudentForm()">
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentID">Student ID</label>
+                            <label for="courseCode">Course Code</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="studentID" id="studentID" placeholder="Enter Student ID">
+                            <input type="text" name="courseCode" id="courseCode" placeholder="Enter Course Code">
                             <div class="invalid-feedback">
-                                * Please enter student id.
+                                * Please enter course code.
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentName">Student Name</label>
+                            <label for="courseTitle">Course Title</label>
 
                         </div>
                         <div class="col-75">

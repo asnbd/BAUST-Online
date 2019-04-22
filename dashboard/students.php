@@ -117,7 +117,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </div>
                         <div class="col-75">
                             <div class="f-right">
-                                <form name="SearchDepartment" action="" method="get">
+                                <form name="SearchStudent" action="" method="get">
                                     <input type="hidden" name="p" value="students">
                                     <select name="dept" id="dept">
                                         <option value="" <?php if(isset($_GET['dept']) && $_GET['dept'] == "") echo 'selected' ?>>All Department</option>
@@ -143,7 +143,19 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                         ?>
                                     </select>
 
-                                    <input type="text" style="min-width: 200px; width: 30%" name="search" placeholder="Search For..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
+                                    <select name="semester" id="semester">
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "") echo "selected" ?>  value="">All Semester</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "1") echo "selected" ?> value="1">Level 1, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "2") echo "selected" ?> value="2">Level 1, Term II</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "3") echo "selected" ?> value="3">Level 2, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "4") echo "selected" ?> value="4">Level 2, Term II</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "5") echo "selected" ?> value="5">Level 3, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "6") echo "selected" ?> value="6">Level 3, Term II</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "7") echo "selected" ?> value="7">Level 4, Term I</option>
+                                        <option <?php if(isset($_GET['semester']) && $_GET['semester'] == "8") echo "selected" ?> value="8">Level 4, Term II</option>
+                                    </select>
+
+                                    <input type="text" style="min-width: 120px; width: 20%" name="search" placeholder="Search For..." value="<?php if(isset($_GET['search'])) echo $_GET['search'] ?>">
 
                                     <button type='submit' class='btn btn-primary'>Search</button><br>
                                     <div id="invalid-dept" class="invalid-feedback">
@@ -178,21 +190,41 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     if(isset($_GET['search'])){
                         $search = $_GET['search'];
                         $dept = isset($_GET['dept'])?$_GET['dept']:"";
-                        if($dept == ""){
-                            $sql = "SELECT student.student_id, student.name,
+                        $semester_p = isset($_GET['semester'])?$_GET['semester']:"";
+//                        if($dept == ""){
+//                            $sql = "SELECT student.student_id, student.name,
+//                                    student.semester, student.email,
+//                                    student.phone, student.department,
+//                                    department.name AS dept_name
+//                                    FROM student LEFT JOIN department ON department.id = student.department
+//                                    WHERE (active = 1)
+//                                    AND (student.name LIKE '%$search%'
+//                                    OR student.student_id LIKE '%$search%'
+//                                    OR student.phone LIKE '%$search%')";
+//                        } else {
+//                            $sql = "SELECT student.student_id, student.name,
+//                                    student.semester, student.email,
+//                                    student.phone, student.department,
+//                                    department.name AS dept_name
+//                                    FROM student LEFT JOIN department ON department.id = student.department
+//                                    WHERE (active = 1) AND (student.department = '$dept') AND (student.name LIKE '%$search%' OR student.student_id LIKE '%$search%' OR student.phone LIKE '%$search%')";
+//                        }
+
+                        $semester_search = $semester_p == ""?"":"AND (student.semester = '" .$semester_p. "')";
+                        $dept_search = $dept == ""?"":"AND (student.department = " .$dept. ")";
+
+                        $sql = "SELECT student.student_id, student.name,
                                     student.semester, student.email,
                                     student.phone, student.department,
                                     department.name AS dept_name
                                     FROM student LEFT JOIN department ON department.id = student.department
-                                    WHERE (active = 1) AND (student.name LIKE '%$search%' OR student.phone LIKE '%$search%')";
-                        } else {
-                            $sql = "SELECT student.student_id, student.name,
-                                    student.semester, student.email,
-                                    student.phone, student.department,
-                                    department.name AS dept_name
-                                    FROM student LEFT JOIN department ON department.id = student.department
-                                    WHERE (active = 1) AND (student.department = '$dept') AND (student.name LIKE '%$search%' OR student.phone LIKE '%$search%')";
-                        }
+                                    WHERE (active = 1)
+                                    ". $dept_search . "
+                                    ". $semester_search . "
+                                    AND (student.name LIKE '%$search%'
+                                    OR student.student_id LIKE '%$search%'
+                                    OR student.phone LIKE '%$search%')";
+
                         if($result = mysqli_query($db_conn, $sql)){
                             if(mysqli_num_rows($result)){
                                 while ($row = mysqli_fetch_assoc($result)){
@@ -250,7 +282,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </tbody>
                 </table>
             </div>
-            <!--                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
         </div>
 
 

@@ -33,6 +33,9 @@ switch ($page) {
     case 'edit_student':
         $url = 'students_edit.php';
         break;
+    case 'courses':
+        $url = 'courses.php';
+        break;
     case 'overview':
         $url = 'overview.php';
         break;

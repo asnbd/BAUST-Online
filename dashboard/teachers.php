@@ -249,52 +249,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         </div>
     </div>
 
-    <!-- Assign Department Head Modal -->
-    <div id="assignDeptHeadModel" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" onclick="modalDisplay('assignDeptHeadModel', 'none')">&times;</span>
-                <h2>Assign Department Head</h2>
-            </div>
-            <div class="modal-body">
-                <p>
-                    <form name="AssignDepartmentHead" action="action/assign_dept_head.php" method="post" onsubmit="return validateDeptHeadForm()">
-                        <label for="departmentHead">Department Head</label>
-                        <br><br>
-                        <select name="deptHead" id="departmentHead">
-                            <option value="" selected>Choose...</option>
-                            <?php
-                            $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
-                            //                            $sql = "SELECT username, name FROM teacher";
-
-                            if($result = mysqli_query($db_conn, $sql)){
-                                if(mysqli_num_rows($result) > 0){
-                                    while($row = mysqli_fetch_assoc($result)){
-                                        echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
-                                    }
-                                } else {
-
-                                }
-                            } else {
-                                die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
-                            }
-                            ?>
-                        </select>
-                        <div id="invalid-dept-head" class="invalid-feedback">
-                            * Please select a department head.
-                        </div>
-                        <br><br>
-                        <input name="deptID" type="hidden">
-                        <button type="submit" class="btn btn-primary">Assign</button>
-                    </form>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" onclick="modalDisplay('assignDeptHeadModel', 'none')">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <script src="js/scripts.js" type="text/javascript"></script>
     <script src="js/validation.js" type="text/javascript"></script>
 

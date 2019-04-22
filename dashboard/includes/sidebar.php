@@ -11,6 +11,7 @@
     <a <?php if($active_page == 'departments') echo 'class="active"'; ?> href="?p=departments"><i class="fas fa-table fa-fw"></i> Departments</a>
     <a <?php if($active_page == 'teachers') echo 'class="active"'; ?> href="?p=teachers"><i class="fas fa-table fa-fw"></i> Teachers</a>
     <a <?php if($active_page == 'students') echo 'class="active"'; ?> href="?p=students"><i class="fas fa-table fa-fw"></i> Students</a>
+    <a <?php if($active_page == 'courses') echo 'class="active"'; ?> href="?p=courses"><i class="fas fa-table fa-fw"></i> Courses</a>
     <a <?php if($active_page == 'admins') echo 'class="active"'; ?> href="?p=admins"><i class="fas fa-table fa-fw"></i> Admins</a>
     <a href="#" onclick="modalDisplay('logoutModel', 'block')"><i class="fas fa-sign-out-alt fa-fw"></i> Logout</a>
 </div>

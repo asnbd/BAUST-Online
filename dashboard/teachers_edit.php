@@ -120,20 +120,20 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
         ?>
 
-        <!-- Teacher Add -->
+        <!-- Teacher Edit -->
         <div class="card">
             <div class="card-header">
                 <i class="fas fa-edit"></i> Edit Teacher</div>
             <div class="card-body">
                 <p>
-                <form class="form-group" name="AddTeacher" action="action/edit_teacher.php" method="post" onsubmit="return validateTeacherForm()">
+                <form class="form-group" name="AddTeacher" action="action/update_teacher.php" method="post" onsubmit="return validateTeacherForm()">
                     <div class="row">
                         <div class="col-25">
                             <label for="teacherUsername">Username</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" disabled name="teacherUsername" id="teacherUsername" placeholder="" value="<?php echo $teacher_row['username'] ?>">
+                            <input type="text" readonly name="teacherUsername" id="teacherUsername" placeholder="" value="<?php echo $teacher_row['username'] ?>">
                             <div class="invalid-feedback">
                                 * Please enter username.
                             </div>
@@ -190,7 +190,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                                             } else {
                                                 echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                                             }
-
                                         }
                                     } else {
 
@@ -212,9 +211,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </div>
                         <div class="col-75">
                             <select name="teacherGender" id="teacherGender">
-                                <option value="" selected>Choose...</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
+                                <option value="">Choose...</option>
+                                <option <?php if ($teacher_row['gender'] == "Male") echo "selected"?> value="Male">Male</option>
+                                <option <?php if ($teacher_row['gender'] == "Female") echo "selected"?> value="Female">Female</option>
                             </select>
                             <div class="invalid-feedback">
                                 * Please select a gender.
@@ -227,7 +226,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="date" name="teacherBirthdate" id="teacherBirthdate" placeholder="DD-MM-YYYY">
+                            <input type="date" name="teacherBirthdate" id="teacherBirthdate" placeholder="MM/DD/YYYY" value="<?php echo $teacher_row['birthdate'] ?>">
                             <div class="invalid-feedback">
                                 * Please enter birthdate.
                             </div>
@@ -239,7 +238,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherEmail" id="teacherEmail" placeholder="Enter Email Address">
+                            <input type="text" name="teacherEmail" id="teacherEmail" placeholder="Enter Email Address" value="<?php echo $teacher_row['email'] ?>">
                             <div class="invalid-feedback">
                                 * Please enter email address.
                             </div>
@@ -251,7 +250,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherPhone" id="teacherPhone" placeholder="Enter Phone Number">
+                            <input type="text" name="teacherPhone" id="teacherPhone" placeholder="Enter Phone Number" value="<?php echo $teacher_row['phone'] ?>">
                             <div class="invalid-feedback">
                                 * Please enter phone number.
                             </div>
@@ -263,7 +262,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherAddress" id="teacherAddress" placeholder="Enter Address">
+                            <input type="text" name="teacherAddress" id="teacherAddress" placeholder="Enter Address" value="<?php echo $teacher_row['address'] ?>">
                             <div class="invalid-feedback">
                                 * Please enter address.
                             </div>
@@ -276,71 +275,71 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </div>
                         <div class="col-75">
                             <select name="teacherDistrict" id="teacherDistrict">
-                                <option value="" selected>Choose...</option>
-                                <option value="Bagerhat">Bagerhat</option>
-                                <option value="Bandarban">Bandarban</option>
-                                <option value="Barguna">Barguna</option>
-                                <option value="Barisal">Barisal</option>
-                                <option value="Bhola">Bhola</option>
-                                <option value="Bogra">Bogra</option>
-                                <option value="Brahmanbaria">Brahmanbaria</option>
-                                <option value="Chandpur">Chandpur</option>
-                                <option value="Chittagong">Chittagong</option>
-                                <option value="Chuadanga">Chuadanga</option>
-                                <option value="Comilla">Comilla</option>
-                                <option value="Cox's Bazar">Cox's Bazar</option>
-                                <option value="Dhaka">Dhaka</option>
-                                <option value="Dinajpur">Dinajpur</option>
-                                <option value="Faridpur">Faridpur</option>
-                                <option value="Feni">Feni</option>
-                                <option value="Gaibandha">Gaibandha</option>
-                                <option value="Gazipur">Gazipur</option>
-                                <option value="Gopalganj">Gopalganj</option>
-                                <option value="Habiganj">Habiganj</option>
-                                <option value="Jaipurhat">Jaipurhat</option>
-                                <option value="Jamalpur">Jamalpur</option>
-                                <option value="Jessore">Jessore</option>
-                                <option value="Jhalakati">Jhalakati</option>
-                                <option value="Jhenaidah">Jhenaidah</option>
-                                <option value="Khagrachari">Khagrachari</option>
-                                <option value="Khulna">Khulna</option>
-                                <option value="Kishoreganj">Kishoreganj</option>
-                                <option value="Kurigram">Kurigram</option>
-                                <option value="Kushtia">Kushtia</option>
-                                <option value="Lakshmipur">Lakshmipur</option>
-                                <option value="Lalmonirhat">Lalmonirhat</option>
-                                <option value="Madaripur">Madaripur</option>
-                                <option value="Magura">Magura</option>
-                                <option value="Manikganj">Manikganj</option>
-                                <option value="Meherpur">Meherpur</option>
-                                <option value="Moulvibazar">Moulvibazar</option>
-                                <option value="Munshiganj">Munshiganj</option>
-                                <option value="Mymensingh">Mymensingh</option>
-                                <option value="Narail">Narail</option>
-                                <option value="Naogaon">Naogaon</option>
-                                <option value="Narayanganj">Narayanganj</option>
-                                <option value="Narsingdi">Narsingdi</option>
-                                <option value="Natore">Natore</option>
-                                <option value="Nawabganj">Nawabganj</option>
-                                <option value="Netrakona">Netrakona</option>
-                                <option value="Nilphamari">Nilphamari</option>
-                                <option value="Noakhali">Noakhali</option>
-                                <option value="Pabna">Pabna</option>
-                                <option value="Panchagarh">Panchagarh</option>
-                                <option value="Parbattya Chattagram">Parbattya Chattagram</option>
-                                <option value="Patuakhali">Patuakhali</option>
-                                <option value="Pirojpur">Pirojpur</option>
-                                <option value="Rangpur">Rangpur</option>
-                                <option value="Rajshahi">Rajshahi</option>
-                                <option value="Rajbari">Rajbari</option>
-                                <option value="Satkhira">Satkhira</option>
-                                <option value="Shariatpur">Shariatpur</option>
-                                <option value="Sherpur">Sherpur</option>
-                                <option value="Sirajganj">Sirajganj</option>
-                                <option value="Sunamganj">Sunamganj</option>
-                                <option value="Sylhet">Sylhet</option>
-                                <option value="Tangail">Tangail</option>
-                                <option value="Thakurgaon">Thakurgaon</option>
+                                <option value="">Choose...</option>
+                                <option <?php if($teacher_row['district'] == "Bagerhat") echo "selected" ?> value="Bagerhat">Bagerhat</option>
+                                <option <?php if($teacher_row['district'] == "Bandarban") echo "selected" ?> value="Bandarban">Bandarban</option>
+                                <option <?php if($teacher_row['district'] == "Barguna") echo "selected" ?> value="Barguna">Barguna</option>
+                                <option <?php if($teacher_row['district'] == "Barisal") echo "selected" ?> value="Barisal">Barisal</option>
+                                <option <?php if($teacher_row['district'] == "Bhola") echo "selected" ?> value="Bhola">Bhola</option>
+                                <option <?php if($teacher_row['district'] == "Bogra") echo "selected" ?> value="Bogra">Bogra</option>
+                                <option <?php if($teacher_row['district'] == "Brahmanbaria") echo "selected" ?> value="Brahmanbaria">Brahmanbaria</option>
+                                <option <?php if($teacher_row['district'] == "Chandpur") echo "selected" ?> value="Chandpur">Chandpur</option>
+                                <option <?php if($teacher_row['district'] == "Chittagong") echo "selected" ?> value="Chittagong">Chittagong</option>
+                                <option <?php if($teacher_row['district'] == "Chuadanga") echo "selected" ?> value="Chuadanga">Chuadanga</option>
+                                <option <?php if($teacher_row['district'] == "Comilla") echo "selected" ?> value="Comilla">Comilla</option>
+                                <option <?php if($teacher_row['district'] == "Cox's Bazar") echo "selected" ?> value="Cox's Bazar">Cox's Bazar</option>
+                                <option <?php if($teacher_row['district'] == "Dhaka") echo "selected" ?> value="Dhaka">Dhaka</option>
+                                <option <?php if($teacher_row['district'] == "Dinajpur") echo "selected" ?> value="Dinajpur">Dinajpur</option>
+                                <option <?php if($teacher_row['district'] == "Faridpur") echo "selected" ?> value="Faridpur">Faridpur</option>
+                                <option <?php if($teacher_row['district'] == "Feni") echo "selected" ?> value="Feni">Feni</option>
+                                <option <?php if($teacher_row['district'] == "Gaibandha") echo "selected" ?> value="Gaibandha">Gaibandha</option>
+                                <option <?php if($teacher_row['district'] == "Gazipur") echo "selected" ?> value="Gazipur">Gazipur</option>
+                                <option <?php if($teacher_row['district'] == "Gopalganj") echo "selected" ?> value="Gopalganj">Gopalganj</option>
+                                <option <?php if($teacher_row['district'] == "Habiganj") echo "selected" ?> value="Habiganj">Habiganj</option>
+                                <option <?php if($teacher_row['district'] == "Jaipurhat") echo "selected" ?> value="Jaipurhat">Jaipurhat</option>
+                                <option <?php if($teacher_row['district'] == "Jamalpur") echo "selected" ?> value="Jamalpur">Jamalpur</option>
+                                <option <?php if($teacher_row['district'] == "Jessore") echo "selected" ?> value="Jessore">Jessore</option>
+                                <option <?php if($teacher_row['district'] == "Jhalakati") echo "selected" ?> value="Jhalakati">Jhalakati</option>
+                                <option <?php if($teacher_row['district'] == "Jhenaidah") echo "selected" ?> value="Jhenaidah">Jhenaidah</option>
+                                <option <?php if($teacher_row['district'] == "Khagrachari") echo "selected" ?> value="Khagrachari">Khagrachari</option>
+                                <option <?php if($teacher_row['district'] == "Khulna") echo "selected" ?> value="Khulna">Khulna</option>
+                                <option <?php if($teacher_row['district'] == "Kishoreganj") echo "selected" ?> value="Kishoreganj">Kishoreganj</option>
+                                <option <?php if($teacher_row['district'] == "Kurigram") echo "selected" ?> value="Kurigram">Kurigram</option>
+                                <option <?php if($teacher_row['district'] == "Kushtia") echo "selected" ?> value="Kushtia">Kushtia</option>
+                                <option <?php if($teacher_row['district'] == "Lakshmipur") echo "selected" ?> value="Lakshmipur">Lakshmipur</option>
+                                <option <?php if($teacher_row['district'] == "Lalmonirhat") echo "selected" ?> value="Lalmonirhat">Lalmonirhat</option>
+                                <option <?php if($teacher_row['district'] == "Madaripur") echo "selected" ?> value="Madaripur">Madaripur</option>
+                                <option <?php if($teacher_row['district'] == "Magura") echo "selected" ?> value="Magura">Magura</option>
+                                <option <?php if($teacher_row['district'] == "Manikganj") echo "selected" ?> value="Manikganj">Manikganj</option>
+                                <option <?php if($teacher_row['district'] == "Meherpur") echo "selected" ?> value="Meherpur">Meherpur</option>
+                                <option <?php if($teacher_row['district'] == "Moulvibazar") echo "selected" ?> value="Moulvibazar">Moulvibazar</option>
+                                <option <?php if($teacher_row['district'] == "Munshiganj") echo "selected" ?> value="Munshiganj">Munshiganj</option>
+                                <option <?php if($teacher_row['district'] == "Mymensingh") echo "selected" ?> value="Mymensingh">Mymensingh</option>
+                                <option <?php if($teacher_row['district'] == "Narail") echo "selected" ?> value="Narail">Narail</option>
+                                <option <?php if($teacher_row['district'] == "Naogaon") echo "selected" ?> value="Naogaon">Naogaon</option>
+                                <option <?php if($teacher_row['district'] == "Narayanganj") echo "selected" ?> value="Narayanganj">Narayanganj</option>
+                                <option <?php if($teacher_row['district'] == "Narsingdi") echo "selected" ?> value="Narsingdi">Narsingdi</option>
+                                <option <?php if($teacher_row['district'] == "Natore") echo "selected" ?> value="Natore">Natore</option>
+                                <option <?php if($teacher_row['district'] == "Nawabganj") echo "selected" ?> value="Nawabganj">Nawabganj</option>
+                                <option <?php if($teacher_row['district'] == "Netrakona") echo "selected" ?> value="Netrakona">Netrakona</option>
+                                <option <?php if($teacher_row['district'] == "Nilphamari") echo "selected" ?> value="Nilphamari">Nilphamari</option>
+                                <option <?php if($teacher_row['district'] == "Noakhali") echo "selected" ?> value="Noakhali">Noakhali</option>
+                                <option <?php if($teacher_row['district'] == "Pabna") echo "selected" ?> value="Pabna">Pabna</option>
+                                <option <?php if($teacher_row['district'] == "Panchagarh") echo "selected" ?> value="Panchagarh">Panchagarh</option>
+                                <option <?php if($teacher_row['district'] == "Parbattya Chattagram") echo "selected" ?> value="Parbattya Chattagram">Parbattya Chattagram</option>
+                                <option <?php if($teacher_row['district'] == "Patuakhali") echo "selected" ?> value="Patuakhali">Patuakhali</option>
+                                <option <?php if($teacher_row['district'] == "Pirojpur") echo "selected" ?> value="Pirojpur">Pirojpur</option>
+                                <option <?php if($teacher_row['district'] == "Rangpur") echo "selected" ?> value="Rangpur">Rangpur</option>
+                                <option <?php if($teacher_row['district'] == "Rajshahi") echo "selected" ?> value="Rajshahi">Rajshahi</option>
+                                <option <?php if($teacher_row['district'] == "Rajbari") echo "selected" ?> value="Rajbari">Rajbari</option>
+                                <option <?php if($teacher_row['district'] == "Satkhira") echo "selected" ?> value="Satkhira">Satkhira</option>
+                                <option <?php if($teacher_row['district'] == "Shariatpur") echo "selected" ?> value="Shariatpur">Shariatpur</option>
+                                <option <?php if($teacher_row['district'] == "Sherpur") echo "selected" ?> value="Sherpur">Sherpur</option>
+                                <option <?php if($teacher_row['district'] == "Sirajganj") echo "selected" ?> value="Sirajganj">Sirajganj</option>
+                                <option <?php if($teacher_row['district'] == "Sunamganj") echo "selected" ?> value="Sunamganj">Sunamganj</option>
+                                <option <?php if($teacher_row['district'] == "Sylhet") echo "selected" ?> value="Sylhet">Sylhet</option>
+                                <option <?php if($teacher_row['district'] == "Tangail") echo "selected" ?> value="Tangail">Tangail</option>
+                                <option <?php if($teacher_row['district'] == "Thakurgaon") echo "selected" ?> value="Thakurgaon">Thakurgaon</option>
 
                             </select>
                             <div class="invalid-feedback">
@@ -354,14 +353,13 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherPhoto" id="teacherPhoto" placeholder="Browse..">
+                            <input type="text" name="teacherPhoto" id="teacherPhoto" placeholder="Browse.." value="<?php echo $teacher_row['photo'] ?>">
                             <div class="invalid-feedback">
                                 * Please choose a photo.
                             </div>
                         </div>
                     </div>
 
-                    <input name="deptID" type="hidden" value="<?php echo $dept_row['id'] ?>">
                     <div class="row">
                         <button type='submit' class='btn btn-primary' style="float: right; margin-top: 15px">Save</button><br>
                     </div>
@@ -375,53 +373,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
         <!-- Footer -->
         <?php include "includes/footer.php" ?>
-    </div>
-
-
-    <!-- Assign Department Head Modal -->
-    <div id="assignDeptHeadModel" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" onclick="modalDisplay('assignDeptHeadModel', 'none')">&times;</span>
-                <h2>Assign Department Head</h2>
-            </div>
-            <div class="modal-body">
-                <p>
-                    <form name="AssignDepartmentHead" action="action/assign_dept_head.php" method="post" onsubmit="return validateDeptHeadForm()">
-                        <label for="departmentHead">Department Head</label>
-                        <br><br>
-                        <select name="deptHead" id="departmentHead">
-                            <option value="" selected>Choose...</option>
-                            <?php
-                            $sql = "SELECT username, name FROM teacher WHERE username NOT IN (SELECT head FROM department)";
-                            //                            $sql = "SELECT username, name FROM teacher";
-
-                            if($result = mysqli_query($db_conn, $sql)){
-                                if(mysqli_num_rows($result) > 0){
-                                    while($row = mysqli_fetch_assoc($result)){
-                                        echo "<option value='" . $row['username'] . "'>" . $row['name'] . "</option>";
-                                    }
-                                } else {
-
-                                }
-                            } else {
-                                die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
-                            }
-                            ?>
-                        </select>
-                        <div id="invalid-dept-head" class="invalid-feedback">
-                            * Please select a department head.
-                        </div>
-                        <br><br>
-                        <input name="deptID" type="hidden">
-                        <button type="submit" class="btn btn-primary">Assign</button>
-                    </form>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" onclick="modalDisplay('assignDeptHeadModel', 'none')">Cancel</button>
-            </div>
-        </div>
     </div>
 
     <script src="js/scripts.js" type="text/javascript"></script>
