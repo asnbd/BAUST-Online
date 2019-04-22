@@ -103,15 +103,15 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <i class="fas fa-edit"></i> Add Teacher</div>
             <div class="card-body">
                 <p>
-                <form class="form-group" name="EditDepartment" action="action/update_dept.php" method="post" onsubmit="return validateEditDeptForm()">
+                <form class="form-group" name="AddTeacher" action="action/add_teacher.php" method="post" onsubmit="return validateTeacherForm()">
                     <div class="row">
                         <div class="col-25">
-                            <label for="departmentName">Department Name</label>
+                            <label for="teacherName">Teacher Name</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="deptName" id="departmentName" placeholder="Enter Department Name" value="<?php echo $dept_row['name'];?>">
-                            <div id="invalid-dept" class="invalid-feedback">
+                            <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name">
+                            <div id="invalid-teacher" class="invalid-feedback">
                                 * Please enter department name.
                             </div>
                         </div>

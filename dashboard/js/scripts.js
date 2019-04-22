@@ -18,7 +18,7 @@ function assignDept(id) {
     document.forms["AssignDepartmentHead"]["deptID"].value = id;
 }
 
-// Delete Modal
+
 var deleteDeptModal = document.getElementById("deleteDeptModel");
 var logoutModal = document.getElementById("logoutModel");
 var assignDeptHeadModal = document.getElementById("assignDeptHeadModel");
@@ -35,6 +35,7 @@ window.onclick = function(event) {
     }
 }
 
+// Delete Modal
 function deleteDeptModalDisplay(disp) {
     deleteDeptModal.style.display = disp;
 }
@@ -50,7 +51,7 @@ function deleteDept(id, name) {
 // Delete Teacher in Departments Page
 function deleteTeacher(id, name) {
     deleteTeacherModal.style.display = "block";
-    document.forms["DeleteDept"]["dept_id"].value = id;
-    document.forms["DeleteDept"]["dept_name"].value = name;
-    document.getElementById("dept_name_text").innerHTML = name;
+    document.forms["DeleteTeacher"]["teacher_id"].value = id;
+    document.forms["DeleteTeacher"]["teacher_name"].value = name;
+    document.getElementById("name_text").innerHTML = name;
 }

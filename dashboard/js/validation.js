@@ -32,6 +32,23 @@ function validateDeptForm() {
     return true;
 }
 
+// Validate Add Teacher Form in Teachers Page
+function validateTeacherForm() {
+    var teacher_name = document.forms["AddTeacher"]["teacherName"];
+
+    teacher_name.classList.remove("invalid-input");
+    teacher_name.getElementsByClassName("").style.display = "none";
+
+    if(dept_name.value == ""){
+        document.getElementById("invalid-dept").style.display = "block";
+        dept_name.classList.add("invalid-input");
+        dept_name.focus();
+        return false;
+    }
+
+    return true;
+}
+
 // Validate Edit Department Form in Departments Page
 function validateEditDeptForm() {
     var dept_name = document.forms["EditDepartment"]["deptName"];

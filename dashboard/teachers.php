@@ -25,23 +25,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     }
 
     mysqli_free_result($result);
-
-    if(isset($_POST['deptName'])){
-        $dept_name = $_POST['deptName'];
-        $dept_desc = $_POST['deptDesc'];
-
-        if(!empty($dept_name)){
-            $sql = "INSERT INTO department (name, description) VALUES('$dept_name', '$dept_desc')";
-
-            if($result = mysqli_query($db_conn, $sql)){
-                $_SESSION['message'] = ["success", "Department Add Success!"];
-            } else {
-                $_SESSION['message'] = ["error", "Error Adding Department!"];
-            }
-        } else {
-            $_SESSION['message'] = ["error", "Error Adding Department! <strong>Invalid Department Name!</strong>"];
-        }
-    }
 } else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
@@ -74,7 +57,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
     <div class="content">
         <ul class="breadcrumb">
-            <li><a href="#">Dashboard</a></li>
+            <li><a href="index.php">Dashboard</a></li>
             <li>Teachers</li>
         </ul>
 
@@ -176,7 +159,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                             echo "<tr><td colspan='5'><center>Database Error!<center></td></tr>";
                         }
                     } else {
-                        $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department ORDER BY dept_name, teacher.designation, teacher.name";
+                        $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE active = 1 ORDER BY dept_name, teacher.designation, teacher.name";
                         if($result = mysqli_query($db_conn, $sql)){
                             while ($row = mysqli_fetch_assoc($result)){
                                 echo "<tr>
@@ -215,12 +198,12 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <h2>Delete Teacher</h2>
             </div>
             <div class="modal-body">
-                <p>Select "Delete" below if you want to delete <strong id="dept_name_text">the selected</strong> teacher.</p>
+                <p>Select "Delete" below if you want to delete <strong id="name_text">the selected</strong> teacher.</p>
             </div>
             <div class="modal-footer">
-                <form name="DeleteDept" action="action/delete_dept.php" method="post">
-                    <input name="dept_id" type="hidden">
-                    <input name="dept_name" type="hidden">
+                <form name="DeleteTeacher" action="action/delete_teacher.php" method="post">
+                    <input name="teacher_id" type="hidden">
+                    <input name="teacher_name" type="hidden">
                     <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
                 <button class="btn btn-secondary" type="button" onclick="modalDisplay('deleteTeacherModal', 'none')">Cancel</button>

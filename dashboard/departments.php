@@ -74,7 +74,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
     <div class="content">
         <ul class="breadcrumb">
-            <li><a href="#">Dashboard</a></li>
+            <li><a href="index.php">Dashboard</a></li>
             <li>Departments</li>
         </ul>
 
@@ -142,7 +142,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </thead>
                     <tbody>
                     <?php
-                    $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username";
+                    $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username ORDER BY department.description, department.name";
                     if($result = mysqli_query($db_conn, $sql)){
                         while ($row = mysqli_fetch_assoc($result)){
                             $head = $row['head'] == ""?"<button type='button' class='btn btn-sm btn-primary' onclick='assignDept(". $row['id'] . ")'>Assign</button>":$row['head'];
