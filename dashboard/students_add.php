@@ -103,116 +103,38 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <i class="fas fa-edit"></i> Add Teacher</div>
             <div class="card-body">
                 <p>
-                <form class="form-group" name="AddTeacher" action="action/add_teacher.php" method="post" onsubmit="return validateTeacherForm()">
+                <form class="form-group" name="AddStudent" action="action/add_student.php" method="post" onsubmit="return validateStudentForm()">
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherUsername">Teacher Username</label>
+                            <label for="studentID">Student ID</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherUsername" id="teacherUsername" placeholder="Enter Teacher Username">
+                            <input type="text" name="studentID" id="studentID" placeholder="Enter Student ID">
                             <div class="invalid-feedback">
-                                * Please enter teacher username.
+                                * Please enter student id.
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherName">Teacher Name</label>
+                            <label for="studentName">Student Name</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherName" id="teacherName" placeholder="Enter Teacher Name">
+                            <input type="text" name="studentName" id="studentName" placeholder="Enter Student Name">
                             <div class="invalid-feedback">
-                                * Please enter teacher name.
+                                * Please enter student name.
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherDesignation">Designation</label>
+                            <label for="studentEmail">Email</label>
 
                         </div>
                         <div class="col-75">
-                            <select name="teacherDesignation" id="teacherDesignation">
-                                <option value="" selected>Choose...</option>
-                                <option value="Professor">Professor</option>
-                                <option value="Associate Professor">Associate Professor</option>
-                                <option value="Assistant Professor">Assistant Professor</option>
-                                <option value="Lecturer">Lecturer</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                * Please enter teacher Designation.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="teacherDepartment">Department</label>
-
-                        </div>
-                        <div class="col-75">
-                            <select name="teacherDepartment" id="teacherDepartment">
-                                <option value="" selected>Choose...</option>
-
-                                <?php
-                                $sql = "SELECT id, name FROM department";
-                                //                            $sql = "SELECT username, name FROM teacher";
-
-                                if($result = mysqli_query($db_conn, $sql)){
-                                    if(mysqli_num_rows($result) > 0){
-                                        while($row = mysqli_fetch_assoc($result)){
-                                            echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
-                                        }
-                                    } else {
-
-                                    }
-                                } else {
-                                    die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
-                                }
-                                ?>
-                            </select>
-                            <div class="invalid-feedback">
-                                * Please enter Department.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="teacherGender">Gender</label>
-
-                        </div>
-                        <div class="col-75">
-                            <select name="teacherGender" id="teacherGender">
-                                <option value="" selected>Choose...</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                * Please enter Gender.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="teacherBirthdate">Birthdate</label>
-
-                        </div>
-                        <div class="col-75">
-                            <input type="text" name="teacherBirthdate" id="teacherBirthdate" placeholder="DD-MM-YYYY">
-                            <div class="invalid-feedback">
-                                * Please enter Birthdate.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="teacherEmail">Email</label>
-
-                        </div>
-                        <div class="col-75">
-                            <input type="text" name="teacherEmail" id="teacherEmail" placeholder="Enter Email Address">
+                            <input type="text" name="studentEmail" id="studentEmail" placeholder="Enter Email Address">
                             <div class="invalid-feedback">
                                 * Please enter email address.
                             </div>
@@ -220,11 +142,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherPhone">Phone</label>
+                            <label for="studentPhone">Phone</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherPhone" id="teacherPhone" placeholder="Enter Phone Number">
+                            <input type="text" name="studentPhone" id="studentPhone" placeholder="Enter Phone Number">
                             <div class="invalid-feedback">
                                 * Please enter phone number.
                             </div>
@@ -232,11 +154,40 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherAddress">Address</label>
+                            <label for="studentGender">Gender</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherAddress" id="teacherAddress" placeholder="Enter Address">
+                            <select name="studentGender" id="studentGender">
+                                <option value="" selected>Choose...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please select Gender.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="studentBirthdate">Birthdate</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="studentBirthdate" id="studentBirthdate" placeholder="DD-MM-YYYY">
+                            <div class="invalid-feedback">
+                                * Please enter Birthdate.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="studentAddress">Address</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="studentAddress" id="studentAddress" placeholder="Enter Address">
                             <div class="invalid-feedback">
                                 * Please enter address.
                             </div>
@@ -244,11 +195,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherDistrict">District</label>
+                            <label for="studentDistrict">District</label>
 
                         </div>
                         <div class="col-75">
-                            <select name="teacherDistrict" id="teacherDistrict">
+                            <select name="studentDistrict" id="studentDistrict">
                                 <option value="" selected>Choose...</option>
                                 <option value="Bagerhat">Bagerhat</option>
                                 <option value="Bandarban">Bandarban</option>
@@ -317,22 +268,82 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                             </select>
                             <div class="invalid-feedback">
-                                * Please enter District.
+                                * Please select District.
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherPhoto">Photo</label>
+                            <label for="studentDepartment">Department</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherPhoto" id="teacherPhoto" placeholder="Browse..">
+                            <select name="studentDepartment" id="studentDepartment">
+                                <option value="" selected>Choose...</option>
+
+                                <?php
+                                $sql = "SELECT id, name FROM department";
+                                //                            $sql = "SELECT username, name FROM teacher";
+
+                                if($result = mysqli_query($db_conn, $sql)){
+                                    if(mysqli_num_rows($result) > 0){
+                                        while($row = mysqli_fetch_assoc($result)){
+                                            echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                        }
+                                    } else {
+
+                                    }
+                                } else {
+                                    die("Error: " . mysqli_connect_error($db_conn). " SQL: " . $sql);
+                                }
+                                ?>
+                            </select>
                             <div class="invalid-feedback">
-                                * Please enter Photo.
+                                * Please select Department.
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="studentSemester">Semester</label>
+
+                        </div>
+                        <div class="col-75">
+                            <select name="studentSemester" id="studentSemester">
+                                <option value="" selected>Choose...</option>
+                                <option value="Level:1 Term:I">Level:1 Term:I</option>
+                                <option value="Level:1 Term:II">Level:1 Term:II</option>
+                                <option value="Level:2 Term:I">Level:2 Term:I</option>
+                                <option value="Level:2 Term:II">Level:2 Term:II</option>
+                                <option value="Level:3 Term:I">Level:3 Term:I</option>
+                                <option value="Level:3 Term:II">Level:3 Term:II</option>
+                                <option value="Level:4 Term:I">Level:4 Term:I</option>
+                                <option value="Level:4 Term:II">Level:4 Term:II</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                * Please select semester.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="studentPhoto">Photo</label>
+
+                        </div>
+                        <div class="col-75">
+                            <input type="text" name="studentPhoto" id="studentPhoto" placeholder="Browse..">
+                            <div class="invalid-feedback">
+                                * Please choose photo.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
 
                     <input name="deptID" type="hidden" value="<?php echo $dept_row['id'] ?>">
                     <div class="row">
