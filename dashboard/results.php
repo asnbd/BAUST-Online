@@ -25,7 +25,7 @@ $semester = [
 
 $message_count = NAN;
 
-if ($login_role <= 3){
+if ($login_role <= 3){  //Owner or Admin
     $sql = "SELECT COUNT(*) AS message FROM message WHERE msg_to = '$login_user' AND unread = 1";
 
     if($result = mysqli_query($db_conn, $sql)){
@@ -36,7 +36,10 @@ if ($login_role <= 3){
     }
 
     mysqli_free_result($result);
-} else {   //Unauthorized
+} else if($login_role == 3) {
+    header("location: ?p=show_result");
+}
+else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
         <h2>You don't have permission to view this page.</h2>");
@@ -62,14 +65,14 @@ if ($login_role <= 3){
     <?php include "includes/header.php" ?>
 
     <!-- Sidebar -->
-    <?php $active_page = "courses"; include "includes/sidebar.php"; ?>
+    <?php $active_page = "results"; include "includes/sidebar.php"; ?>
 
     <?php include "includes/header.php" ?>
 
     <div class="content">
         <ul class="breadcrumb">
             <li><a href="index.php">Dashboard</a></li>
-            <li>Courses</li>
+            <li>Results</li>
         </ul>
 
         <?php
@@ -106,21 +109,19 @@ if ($login_role <= 3){
         }
         ?>
 
-        <!-- Courses Table -->
+        <!-- Results Table -->
         <div class="card">
-            <div class="card-header"><i class="fas fa-table"></i> Courses</div>
+            <div class="card-header"><i class="fas fa-table"></i> Results</div>
             <div class="card-body">
                 <div class="data-table-head">
                     <div class="row">
                         <div class="col-25">
-                            <?php if ($login_role < 2) {?>
-                                <a href="?p=add_course"><button type='button' class='btn btn-primary'>Add Course</button><br></a>
-                            <?php } ?>
+                            <a href="?p=add_result"><button type='button' class='btn btn-primary'>Add Result</button><br></a>
                         </div>
                         <div class="col-75">
                             <div class="f-right">
-                                <form name="SearchCourse" action="" method="get">
-                                    <input type="hidden" name="p" value="courses">
+                                <form name="SearchResult" action="" method="get">
+                                    <input type="hidden" name="p" value="results">
                                     <select name="dept" id="dept">
                                         <option value="" <?php if(isset($_GET['dept']) && $_GET['dept'] == "") echo 'selected' ?>>All Department</option>
                                         <?php
@@ -174,17 +175,15 @@ if ($login_role <= 3){
                     </div>
                 </div>
 
-                <?php if($login_role < 2){ ?>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <!--                                <th width='15px'>#</th>-->
-                        <th>Code</th>
-                        <th>Title</th>
-                        <th>Credit</th>
+                        <th>Course</th>
+                        <th>Course Title</th>
+                        <th>Type</th>
                         <th>Department</th>
                         <th>Semester</th>
-                        <th>Teacher</th>
                         <th>Options</th>
                     </tr>
                     </thead>
@@ -198,28 +197,27 @@ if ($login_role <= 3){
                         $semester_search = $semester_p == ""?"":"AND (course.semester = '" .$semester_p. "')";
                         $dept_search = $dept == ""?"":"AND (course.department = " .$dept. ")";
 
-                        $sql = "SELECT course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
-                            FROM course
-                            LEFT JOIN teacher ON course.teacher = teacher.username
-                            LEFT JOIN department ON department.id = teacher.department
+                        $sql = "SELECT result.id, result.type, course.code AS course_code, course.title AS course_title, course.semester AS semester, department.name AS dept_name
+                            FROM result
+                            LEFT JOIN course ON result.course = course.id
+                            LEFT JOIN department ON course.department = department.id
                             WHERE (course.code LIKE '%$search%'
                             OR course.title LIKE '%$search%'
-                            OR teacher.name LIKE '%$search%')
+                            OR result.type LIKE '%$search%')
                             " . $dept_search . $semester_search;
 
                         if($result = mysqli_query($db_conn, $sql)){
                             if(mysqli_num_rows($result)){
                                 while ($row = mysqli_fetch_assoc($result)){
                                     echo "<tr>
-                                            <td>" . $row['code'] . "</td>
-                                            <td>" . $row['title'] . "</td>
-                                            <td>" . $row['credit'] . "</td>
+                                            <td>" . $row['course_code'] . "</td>
+                                            <td>" . $row['course_title'] . "</td>
+                                            <td>" . $row['type'] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
                                             <td>" . $semester[$row['semester']] . "</td>
-                                            <td>" . $row['teacher_name'] . "</td>
                                             
-                                            <td> <a href='?p=edit_course&id=". $row['code'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
-                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['code'] . "\", \"" . $row['title'] . "\")'>Delete</button>" . "</td>
+                                            <td> <a href='?p=edit_course&id=". $row['course_code'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['course_code'] . "\", \"" . $row['course_title'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                                 }
                             } else{
@@ -229,23 +227,22 @@ if ($login_role <= 3){
                             echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
                         }
                     } else {
-                        $sql = "SELECT course.id, course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
-                            FROM course
-                            LEFT JOIN teacher ON course.teacher = teacher.username
-                            LEFT JOIN department ON department.id = teacher.department";
+                        $sql = "SELECT result.id, result.type, course.code AS course_code, course.title AS course_title, course.semester AS semester, department.name AS dept_name
+                            FROM result
+                            LEFT JOIN course ON result.course = course.id
+                            LEFT JOIN department ON course.department = department.id";
                         if($result = mysqli_query($db_conn, $sql)){
                             if(mysqli_num_rows($result)){
                                 while ($row = mysqli_fetch_assoc($result)){
                                     echo "<tr>
-                                            <td>" . $row['code'] . "</td>
-                                            <td>" . $row['title'] . "</td>
-                                            <td>" . $row['credit'] . "</td>
+                                            <td>" . $row['course_code'] . "</td>
+                                            <td>" . $row['course_title'] . "</td>
+                                            <td>" . $row['type'] . "</td>
                                             <td>" . $row['dept_name'] . "</td>
                                             <td>" . $semester[$row['semester']] . "</td>
-                                            <td>" . $row['teacher_name'] . "</td>
                                             
-                                            <td> <a href='?p=edit_course&id=". $row['id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
-                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteCourse(\"" . $row['id'] . "\", \"" . $row['title'] . "\")'>Delete</button>" . "</td>
+                                            <td> <a href='?p=edit_result&id=". $row['id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <button type='button' class='btn btn-danger btn-sm' onclick='deleteResult(\"" . $row['course_code'] . "\", \"" . $row['course_title'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
                                 }
                             }else {
@@ -259,87 +256,6 @@ if ($login_role <= 3){
 
                     </tbody>
                 </table>
-                <?php } else {?>
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <!--                                <th width='15px'>#</th>-->
-                            <th>Code</th>
-                            <th>Title</th>
-                            <th>Credit</th>
-                            <th>Department</th>
-                            <th>Semester</th>
-                            <th>Teacher</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        if(isset($_GET['search'])){
-                            $search = $_GET['search'];
-                            $dept = isset($_GET['dept'])?$_GET['dept']:"";
-                            $semester_p = isset($_GET['semester'])?$_GET['semester']:"";
-
-                            $semester_search = $semester_p == ""?"":"AND (course.semester = '" .$semester_p. "')";
-                            $dept_search = $dept == ""?"":"AND (course.department = " .$dept. ")";
-
-                            $sql = "SELECT course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
-                            FROM course
-                            LEFT JOIN teacher ON course.teacher = teacher.username
-                            LEFT JOIN department ON department.id = teacher.department
-                            WHERE (course.code LIKE '%$search%'
-                            OR course.title LIKE '%$search%'
-                            OR teacher.name LIKE '%$search%')
-                            " . $dept_search . $semester_search;
-
-                            if($result = mysqli_query($db_conn, $sql)){
-                                if(mysqli_num_rows($result)){
-                                    while ($row = mysqli_fetch_assoc($result)){
-                                        echo "<tr>
-                                            <td>" . $row['code'] . "</td>
-                                            <td>" . $row['title'] . "</td>
-                                            <td>" . $row['credit'] . "</td>
-                                            <td>" . $row['dept_name'] . "</td>
-                                            <td>" . $semester[$row['semester']] . "</td>
-                                            <td>" . $row['teacher_name'] . "</td>
-                                            
-                                           </tr>";
-                                    }
-                                } else{
-                                    echo "<tr><td colspan='7'><center>No Courses Found<center></td></tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
-                            }
-                        } else {
-                            $sql = "SELECT course.id, course.code, course.title, course.credit, course.department, course.semester, course.teacher, teacher.name AS teacher_name, department.name AS dept_name
-                            FROM course
-                            LEFT JOIN teacher ON course.teacher = teacher.username
-                            LEFT JOIN department ON department.id = teacher.department";
-                            if($result = mysqli_query($db_conn, $sql)){
-                                if(mysqli_num_rows($result)){
-                                    while ($row = mysqli_fetch_assoc($result)){
-                                        echo "<tr>
-                                            <td>" . $row['code'] . "</td>
-                                            <td>" . $row['title'] . "</td>
-                                            <td>" . $row['credit'] . "</td>
-                                            <td>" . $row['dept_name'] . "</td>
-                                            <td>" . $semester[$row['semester']] . "</td>
-                                            <td>" . $row['teacher_name'] . "</td>
-                                            
-                                            </tr>";
-                                    }
-                                }else {
-                                    echo "<tr><td colspan='5'><center>No Courses<center></td></tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='5'><center>Database Error! ". mysqli_error($db_conn) . "<center></td></tr>";
-                            }
-                        }
-                        ?>
-
-                        </tbody>
-                    </table>
-                <?php }?>
             </div>
         </div>
 
@@ -349,23 +265,23 @@ if ($login_role <= 3){
         <?php include "includes/footer.php" ?>
     </div>
 
-    <!-- Delete Course Modal -->
-    <div id="deleteCourseModal" class="modal">
+    <!-- Delete Result Modal -->
+    <div id="deleteResultModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close" onclick="modalDisplay('deleteCourseModal', 'none')">&times;</span>
+                <span class="close" onclick="modalDisplay('deleteResultModal', 'none')">&times;</span>
                 <h2>Delete Course</h2>
             </div>
             <div class="modal-body">
-                <p>Select "Delete" below if you want to delete <strong id="name_text">the selected</strong> course.</p>
+                <p>Select "Delete" below if you want to delete <strong id="name_text">the selected</strong> Result.</p>
             </div>
             <div class="modal-footer">
-                <form name="DeleteCourse" action="action/delete_course.php" method="post">
+                <form name="DeleteResult" action="action/delete_course.php" method="post">
                     <input name="course_code" type="hidden">
                     <input name="course_title" type="hidden">
                     <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
-                <button class="btn btn-secondary" type="button" onclick="modalDisplay('deleteCourseModal', 'none')">Cancel</button>
+                <button class="btn btn-secondary" type="button" onclick="modalDisplay('deleteResultModal', 'none')">Cancel</button>
             </div>
         </div>
     </div>

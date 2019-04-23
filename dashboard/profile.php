@@ -38,7 +38,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 student.photo FROM student
                 LEFT JOIN department ON student.department = department.id
                 WHERE student_id = '$user_id'";
-        //mysqli_real_escape_string($sql);
 
         if($result = mysqli_query($db_conn, $sql)){
             $student_row = mysqli_fetch_assoc($result);
@@ -120,20 +119,20 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
         }
         ?>
 
-        <!-- Student Edit -->
+        <!-- Settings -->
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-edit"></i> Edit Student</div>
+                <i class="fas fa-edit"></i> Profile</div>
             <div class="card-body">
                 <p>
                 <form class="form-group" name="AddStudent" action="action/update_student.php" method="post" onsubmit="return validateStudentForm()">
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentID">Student ID</label>
+                            <label for="username">Username</label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" readonly name="studentID" id="studentID" placeholder="Enter Student ID" value="<?php echo $student_row['student_id'];?>">
+                            <input type="text" readonly name="username" id="username" value="<?php echo $student_row['student_id'];?>">
                             <div class="invalid-feedback">
                                 * Please enter student id.
                             </div>
@@ -141,7 +140,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentName">Student Name</label>
+                            <label for="studentName">Email</label>
 
                         </div>
                         <div class="col-75">

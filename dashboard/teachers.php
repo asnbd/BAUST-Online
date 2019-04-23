@@ -14,7 +14,7 @@ include "../includes/session.php";
 
 $message_count = NAN;
 
-if ($login_role == 0 || $login_role == 1){  //Owner or Admin
+if ($login_role <= 3){  //Owner or Admin
     $sql = "SELECT COUNT(*) AS message FROM message WHERE msg_to = '$login_user' AND unread = 1";
 
     if($result = mysqli_query($db_conn, $sql)){
@@ -25,7 +25,9 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     }
 
     mysqli_free_result($result);
-} else {   //Unauthorized
+} elseif ($login_role == 3) {
+
+}else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
         <h2>You don't have permission to view this page.</h2>");
@@ -102,7 +104,10 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                 <div class="data-table-head">
                     <div class="row">
                         <div class="col-25">
-                            <a href="?p=add_teacher"><button type='button' class='btn btn-primary'>Add Teacher</button><br></a>
+                            <?php if ($login_role < 2) { ?>
+                                <a href="?p=add_teacher"><button type='button' class='btn btn-primary'>Add Teacher</button><br></a>
+                            <?php } ?>
+
                         </div>
                         <div class="col-75">
                             <div class="f-right">
@@ -114,7 +119,6 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
 
                                         $sql = "SELECT id, name FROM department";
-                                        //                            $sql = "SELECT username, name FROM teacher";
 
                                         if($result = mysqli_query($db_conn, $sql)){
                                             if(mysqli_num_rows($result) > 0){
@@ -152,6 +156,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                 </div>
 
+                <?php if ($login_role < 2){ ?>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
@@ -218,6 +223,70 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                     </tbody>
                 </table>
+                <?php } else { ?>
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <!--                                <th width='15px'>#</th>-->
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if(isset($_GET['search'])){
+                        $search = $_GET['search'];
+                        $dept = isset($_GET['dept'])?$_GET['dept']:"";
+                        if($dept == ""){
+                            $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE (teacher.name LIKE '%$search%' OR teacher.phone LIKE '%$search%') ORDER BY dept_name, teacher.designation, teacher.name";
+                        } else {
+                            $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE (teacher.department = $dept) AND (teacher.name LIKE '%$search%' OR teacher.phone LIKE '%$search%') ORDER BY dept_name, teacher.designation, teacher.name";
+                        }
+                        if($result = mysqli_query($db_conn, $sql)){
+                            if(mysqli_num_rows($result)){
+                                while ($row = mysqli_fetch_assoc($result)){
+                                    echo "<tr>
+                                            <td>" . $row['name'] . "</td>
+                                            <td>" . $row['designation'] . "</td>
+                                            <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $row['email'] . "</td>
+                                            <td>" . $row['phone'] . "</td>
+                                            
+                                             </tr>";
+                                }
+                            } else{
+                                echo "<tr><td colspan='6'><center>No Teachers Found<center></td></tr>";
+                            }
+
+                        } else {
+                            echo "<tr><td colspan='6'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
+                        }
+                    } else {
+                        $sql = "SELECT teacher.username, teacher.name, teacher.designation, teacher.email, teacher.phone, teacher.department, department.name AS dept_name FROM teacher LEFT JOIN department ON department.id = teacher.department WHERE active = 1 ORDER BY dept_name, teacher.designation, teacher.name";
+                        if($result = mysqli_query($db_conn, $sql)){
+                            while ($row = mysqli_fetch_assoc($result)){
+                                echo "<tr>
+                                            <td>" . $row['name'] . "</td>
+                                            <td>" . $row['designation'] . "</td>
+                                            <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $row['email'] . "</td>
+                                            <td>" . $row['phone'] . "</td>
+                                            
+                                      </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='5'><center>No Teachers<center></td></tr>";
+                        }
+                    }
+                    ?>
+
+                </tbody>
+                </table>
+                <?php }
+                ?>
             </div>
             <!--                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
         </div>

@@ -39,7 +39,6 @@
             $show_msg = "ERROR";
         }
     }
-
 ?>
 
 <body>

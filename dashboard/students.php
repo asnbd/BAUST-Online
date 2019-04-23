@@ -25,7 +25,7 @@ $semester = [
 
 $message_count = NAN;
 
-if ($login_role == 0 || $login_role == 1){  //Owner or Admin
+if ($login_role <= 3){  //Owner or Admin
     $sql = "SELECT COUNT(*) AS message FROM message WHERE msg_to = '$login_user' AND unread = 1";
 
     if($result = mysqli_query($db_conn, $sql)){
@@ -172,6 +172,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                 </div>
 
+                <?php if($login_role < 2){ ?>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
@@ -281,6 +282,110 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
 
                     </tbody>
                 </table>
+                <?php } else {?>
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <!--                                <th width='15px'>#</th>-->
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Semester</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        if(isset($_GET['search'])){
+                            $search = $_GET['search'];
+                            $dept = isset($_GET['dept'])?$_GET['dept']:"";
+                            $semester_p = isset($_GET['semester'])?$_GET['semester']:"";
+//                        if($dept == ""){
+//                            $sql = "SELECT student.student_id, student.name,
+//                                    student.semester, student.email,
+//                                    student.phone, student.department,
+//                                    department.name AS dept_name
+//                                    FROM student LEFT JOIN department ON department.id = student.department
+//                                    WHERE (active = 1)
+//                                    AND (student.name LIKE '%$search%'
+//                                    OR student.student_id LIKE '%$search%'
+//                                    OR student.phone LIKE '%$search%')";
+//                        } else {
+//                            $sql = "SELECT student.student_id, student.name,
+//                                    student.semester, student.email,
+//                                    student.phone, student.department,
+//                                    department.name AS dept_name
+//                                    FROM student LEFT JOIN department ON department.id = student.department
+//                                    WHERE (active = 1) AND (student.department = '$dept') AND (student.name LIKE '%$search%' OR student.student_id LIKE '%$search%' OR student.phone LIKE '%$search%')";
+//                        }
+
+                            $semester_search = $semester_p == ""?"":"AND (student.semester = '" .$semester_p. "')";
+                            $dept_search = $dept == ""?"":"AND (student.department = " .$dept. ")";
+
+                            $sql = "SELECT student.student_id, student.name,
+                                    student.semester, student.email,
+                                    student.phone, student.department,
+                                    department.name AS dept_name
+                                    FROM student LEFT JOIN department ON department.id = student.department
+                                    WHERE (active = 1)
+                                    ". $dept_search . "
+                                    ". $semester_search . "
+                                    AND (student.name LIKE '%$search%'
+                                    OR student.student_id LIKE '%$search%'
+                                    OR student.phone LIKE '%$search%')";
+
+                            if($result = mysqli_query($db_conn, $sql)){
+                                if(mysqli_num_rows($result)){
+                                    while ($row = mysqli_fetch_assoc($result)){
+                                        echo "<tr>
+                                            <td>" . $row['student_id'] . "</td>
+                                            <td>" . $row['name'] . "</td>
+                                            <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
+                                            <td>" . $row['email'] . "</td>
+                                            <td>" . $row['phone'] . "</td>
+                                             </tr>";
+                                    }
+                                } else{
+                                    echo "<tr><td colspan='7'><center>No Students Found<center></td></tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) ."<center></td></tr>";
+                            }
+                        } else {
+                            $sql = "SELECT student.student_id,
+                                student.name, student.semester,
+                                student.email, student.phone,
+                                student.department,
+                                department.name AS dept_name
+                                FROM student
+                                LEFT JOIN department ON department.id = student.department
+                                WHERE active = 1";
+                            if($result = mysqli_query($db_conn, $sql)){
+                                if(mysqli_num_rows($result)){
+                                    while ($row = mysqli_fetch_assoc($result)){
+                                        echo "<tr>
+                                            <td>" . $row['student_id'] . "</td>
+                                            <td>" . $row['name'] . "</td>
+                                            <td>" . $row['dept_name'] . "</td>
+                                            <td>" . $semester[$row['semester']] . "</td>
+                                            <td>" . $row['email'] . "</td>
+                                            <td>" . $row['phone'] . "</td>
+                                            </tr>";
+                                    }
+                                }else {
+                                    echo "<tr><td colspan='7'><center>No Students<center></td></tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='7'><center>Database Error! ". mysqli_error($db_conn) . "<center></td></tr>";
+                            }
+                        }
+                        ?>
+
+                        </tbody>
+                    </table>
+                <?php } ?>
             </div>
         </div>
 

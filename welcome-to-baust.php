@@ -8,20 +8,7 @@
 
 <body>
 
-    <div class="header">
-        <div class="header-container">
-            <a href="index.html"><img src="img/BAUST-Logo.png" height="55px" alt="BAUST Online" class="logo"></a>
-            <nav>
-                <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="login.php">Login</a></li>
-                    <li><a href="signup_student.php">Signup</a></li>
-                    <li><a href="about.php">About</a></li>
-                    <li><a href="contact.php">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+<?php $active_page = 'welcome'; include('includes/header.php'); ?>
 
 
     <div class="cover">

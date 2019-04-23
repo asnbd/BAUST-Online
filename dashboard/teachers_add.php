@@ -42,7 +42,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -322,11 +322,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="teacherPhoto">Photo</label>
+                            <label for="teacherPhoto"></label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="teacherPhoto" id="teacherPhoto" placeholder="Browse..">
+                            <input type="hidden" name="teacherPhoto" id="teacherPhoto" placeholder="Browse.." value="12">
                             <div class="invalid-feedback">
                                 * Please choose a photo.
                             </div>

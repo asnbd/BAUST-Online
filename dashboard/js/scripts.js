@@ -74,3 +74,11 @@ function deleteCourse(id, name) {
     document.forms["DeleteCourse"]["course_title"].value = name;
     document.getElementById("name_text").innerHTML = name;
 }
+
+// Delete Result
+function deleteResult(id, name) {
+    deleteResultModal.style.display = "block";
+    document.forms["DeleteResult"]["course_code"].value = id;
+    document.forms["DeleteResult"]["course_title"].value = name;
+    document.getElementById("name_text").innerHTML = name;
+}

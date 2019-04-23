@@ -14,7 +14,7 @@ include "../includes/session.php";
 
 $message_count = NAN;
 
-if ($login_role == 0 || $login_role == 1){  //Owner or Admin
+if ($login_role <= 3){  //Owner or Admin
     $sql = "SELECT COUNT(*) AS message FROM message WHERE msg_to = '$login_user' AND unread = 1";
 
     if($result = mysqli_query($db_conn, $sql)){
@@ -41,7 +41,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -326,11 +326,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="studentPhoto">Photo</label>
+                            <label for="studentPhoto"></label>
 
                         </div>
                         <div class="col-75">
-                            <input type="text" name="studentPhoto" id="studentPhoto" placeholder="Browse..">
+                            <input type="hidden" name="studentPhoto" id="studentPhoto" placeholder="Browse.." value="12">
                             <div class="invalid-feedback">
                                 * Please choose a photo.
                             </div>

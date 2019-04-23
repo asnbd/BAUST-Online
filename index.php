@@ -24,7 +24,7 @@
         <p>BAUST is located at Saidpur Cantonment. Saidpur is a city of Nilphamari district in Rangpur Division of
             Bangladesh. The city becomes...</p>
 
-        <a href="welcome-to-baust.html" class="button1">Read More</a>
+        <a href="welcome-to-baust.php" class="button1">Read More</a>
 
         <br /><br /><br /><br />
 
@@ -35,7 +35,7 @@
         <p>User must have to register & log in to the website to enjoy the online services. Why are you waiting? Join
             now!</p>
 
-        <center><a href="login.html" class="button1">Login</a> or <a href="signup.html" class="button2">Signup</a>
+        <center><a href="login.php" class="button1">Login</a> or <a href="signup_student.php" class="button2">Signup</a>
         </center>
     </div>
 

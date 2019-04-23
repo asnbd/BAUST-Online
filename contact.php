@@ -13,7 +13,7 @@
     <div class="container">
         <div class="login-box">
             <center><h1>Contact</h1></center>
-            <form>
+            <form action="contact.php" method="post">
                 <p>Name</p>
                 <input type="text" name="name" placeholder="Enter Your name" required>
 				<p>Email</p>
@@ -23,7 +23,6 @@
 				<p>Message</p>
                 <textarea cols="30" rows="10" name="message" placeholder="Enter Your Message" required></textarea>
                 <input type="submit" name="submit" value="Submit">
-                <!--<a href="#">Forget Password</a>-->
             </form>
 
         </div>

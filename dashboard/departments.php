@@ -14,7 +14,7 @@ include "../includes/session.php";
 
 $message_count = NAN;
 
-if ($login_role == 0 || $login_role == 1){  //Owner or Admin
+if ($login_role <=3){  //Owner or Admin
     $sql = "SELECT COUNT(*) AS message FROM message WHERE msg_to = '$login_user' AND unread = 1";
 
     if($result = mysqli_query($db_conn, $sql)){
@@ -42,7 +42,10 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
             $_SESSION['message'] = ["error", "Error Adding Department! <strong>Invalid Department Name!</strong>"];
         }
     }
-} else {   //Unauthorized
+} else if($login_role <= 3) {
+
+}
+else {   //Unauthorized
     die("<title>Unauthorized | BAUST Online</title>
         <h1>Unauthorized</h1><hr>
         <h2>You don't have permission to view this page.</h2>");
@@ -58,7 +61,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -117,6 +120,8 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
             <div class="card-header">
                 <i class="fas fa-table"></i> Departments</div>
             <div class="card-body">
+                <?php if($login_role < 2) { ?>
+
                 <p>
                     <form name="AddDepartment" action="?p=departments" method="post" onsubmit="return validateDeptForm()">
                         <input type="text" style="min-width: 100px; width: 20%" name="deptName" placeholder="Enter Department Name">
@@ -128,6 +133,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                         </div>
                     </form>
                 </p>
+                <?php } ?>
 
 
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -142,20 +148,35 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
                     </thead>
                     <tbody>
                     <?php
-                    $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username ORDER BY department.description, department.name";
-                    if($result = mysqli_query($db_conn, $sql)){
-                        while ($row = mysqli_fetch_assoc($result)){
-                            $head = $row['head'] == ""?"<button type='button' class='btn btn-sm btn-primary' onclick='assignDept(". $row['id'] . ")'>Assign</button>":$row['head'];
-    //                                        <td style='text-align: center; vertical-align: middle'><input onclick='toggleSelect(this)' type='checkbox'></td>
-                            echo "<tr>
+                    if($login_role < 2) {
+                        $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username ORDER BY department.description, department.name";
+                        if ($result = mysqli_query($db_conn, $sql)) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $head = $row['head'] == "" ? "<button type='button' class='btn btn-sm btn-primary' onclick='assignDept(" . $row['id'] . ")'>Assign</button>" : $row['head'];
+                                //                                        <td style='text-align: center; vertical-align: middle'><input onclick='toggleSelect(this)' type='checkbox'></td>
+                                echo "<tr>
                                             <td>" . $row['name'] . "</td>
                                             <td>" . $row['description'] . "</td>
                                             <td>" . $head . "</td>
                                             
-                                            <td> <a href='?p=edit_dept&id=". $row['id'] ."'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
+                                            <td> <a href='?p=edit_dept&id=" . $row['id'] . "'><button type='button' class='btn btn-success btn-sm'>Edit</button></a>
                                             <button type='button' class='btn btn-danger btn-sm' onclick='deleteDept(" . $row['id'] . ", \"" . $row['name'] . "\")'>Delete</button>" . "</td>
                                         </tr>";
 //                            <td> <button type='button' class='btn btn-success btn-sm' onclick='editDept(" . $row['id'] . ", \"" . $row['name'] . "\", \"" . $row['description'] . "\", \"" . $row['username'] . "\", \"" . $row['head'] . "\")'>Edit</button>
+                            }
+                        }
+                    } else {
+                        $sql = "SELECT department.id, department.name, department.description, teacher.username, teacher.name AS head FROM department LEFT JOIN teacher ON department.head = teacher.username ORDER BY department.description, department.name";
+                        if ($result = mysqli_query($db_conn, $sql)) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<tr>
+                                            <td>" . $row['name'] . "</td>
+                                            <td>" . $row['description'] . "</td>
+                                            <td>" . $row['head'] . "</td>
+                                            
+                                            </tr>";
+//                            <td> <button type='button' class='btn btn-success btn-sm' onclick='editDept(" . $row['id'] . ", \"" . $row['name'] . "\", \"" . $row['description'] . "\", \"" . $row['username'] . "\", \"" . $row['head'] . "\")'>Edit</button>
+                            }
                         }
                     }
                     ?>

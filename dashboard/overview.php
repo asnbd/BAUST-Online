@@ -15,7 +15,7 @@ $dept_count = NAN;
 $course_count = NAN;
 $message_count = NAN;
 
-if ($login_role == 0 || $login_role == 1){  //Owner or Admin
+if ($login_role <= 3){  //Owner or Admin
     $sql = "SELECT
             (SELECT COUNT(*) FROM department) AS dept,
             (SELECT COUNT(*) FROM course) AS course,
@@ -56,7 +56,7 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -108,11 +108,11 @@ if ($login_role == 0 || $login_role == 1){  //Owner or Admin
             </div>
         </a>
 
-        <a href="?p=admins">
+        <a href="?p=courses">
             <div class="column bg-red">
                 <i class="right_icon fas fa-user-cog fa-fw"></i>
-                <div class="big_text">0</div>
-                <p>Admins</p>
+                <div class="big_text"><?php echo $course_count ?></div>
+                <p>Courses</p>
             </div>
         </a>
     </div>

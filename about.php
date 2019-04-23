@@ -25,7 +25,7 @@
         <p>User must have to register & log in to the website to enjoy the online services. Why are you waiting? Join
             now!</p>
 
-        <center><a href="login.html" class="button1">Login</a> or <a href="signup.html" class="button2">Signup</a>
+        <center><a href="login.php" class="button1">Login</a> or <a href="signup_student.php" class="button2">Signup</a>
         </center>
     </div>
 

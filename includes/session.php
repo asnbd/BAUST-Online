@@ -27,8 +27,6 @@ if(isset($_SESSION['login_user'])) {
     }
 
     mysqli_free_result($result);
-} else {
-    header('Location: ../login.php?r=dashboard');
 }
 
 //if(!isset($login_session)){

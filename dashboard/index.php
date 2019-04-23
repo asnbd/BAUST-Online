@@ -45,6 +45,21 @@ switch ($page) {
     case 'results':
         $url = 'results.php';
         break;
+    case 'add_result':
+        $url = 'results_add.php';
+        break;
+    case 'edit_result':
+        $url = 'results_mark_add.php';
+        break;
+    case 'show_result':
+        $url = 'results_show.php';
+        break;
+    case 'student_profile':
+        $url = 'student_profile.php';
+        break;
+        case 'marks_show':
+        $url = 'marks_show.php';
+        break;
     case 'overview':
         $url = 'overview.php';
         break;
