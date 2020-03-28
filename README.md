@@ -5,7 +5,7 @@ Undergraduate Web Engineering Project Based on HTML, PHP, MySQL & JavaScript
 * **Asswad Sarker Nomaan (ID: 160101006)**
 * **Mst. Monakkara Begum (ID: 160101026)**
 * **Abdullah Al Baki (ID: 160101004)**
-* **Wajiha Ahmed Warka (ID: 160101015)**
+* **Wajiha Ahamed Warka (ID: 160101015)**
 
 Department of Computer Science & Engineering (CSE),
 
